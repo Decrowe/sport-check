@@ -8,8 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { AddExercise, Exercise } from '@domains/daily-challange/enteties';
-import { ExersiceService } from '@domains/daily-challange/services';
+import { AddExercise, Exercise } from '@domains/daily/enteties';
+import { ExersiceService } from '@domains/daily/services';
 
 @Component({
   selector: 'app-exercises',

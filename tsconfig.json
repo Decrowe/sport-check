@@ -16,10 +16,10 @@
     "module": "preserve",
     "paths": {
       "@shared": ["./src/app/shared/index.ts"],
-      "@domains/daily-challange": ["./src/app/domains/daily-challange/index.ts"],
-      "@domains/daily-challange/enteties": ["./src/app/domains/daily-challange/enteties/index.ts"],
-      "@domains/daily-challange/features": ["./src/app/domains/daily-challange/features/index.ts"],
-      "@domains/daily-challange/services": ["./src/app/domains/daily-challange/services/index.ts"]
+      "@domains/daily": ["./src/app/domains/daily/index.ts"],
+      "@domains/daily/enteties": ["./src/app/domains/daily/enteties/index.ts"],
+      "@domains/daily/features": ["./src/app/domains/daily/features/index.ts"],
+      "@domains/daily/services": ["./src/app/domains/daily/services/index.ts"]
     }
   },
   "angularCompilerOptions": {

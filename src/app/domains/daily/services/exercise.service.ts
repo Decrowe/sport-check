@@ -1,5 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { AddExercise, Exercise, ExerciseState } from '@domains/daily-challange/enteties';
+import { AddExercise, Exercise, ExerciseState } from '@domains/daily/enteties';
 import { deepClone } from '@shared';
 
 const mockExercises: Exercise[] = [

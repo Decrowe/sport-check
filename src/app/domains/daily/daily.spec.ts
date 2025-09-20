@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DailyChallange } from './daily-challange';
+import { Daily } from './daily';
 
-describe('DailyChallange', () => {
-  let component: DailyChallange;
-  let fixture: ComponentFixture<DailyChallange>;
+describe('Daily', () => {
+  let component: Daily;
+  let fixture: ComponentFixture<Daily>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DailyChallange]
-    })
-    .compileComponents();
+      imports: [Daily],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(DailyChallange);
+    fixture = TestBed.createComponent(Daily);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
