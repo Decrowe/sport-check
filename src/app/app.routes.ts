@@ -3,11 +3,11 @@ import { DailyChallange } from './domains/daily-challange/daily-challange';
 
 export const routes: Routes = [
   {
-    path: 'daily-challange',
+    path: '',
     component: DailyChallange,
   },
   {
     path: '**',
-    redirectTo: 'daily-challange',
+    redirectTo: '',
   },
 ];

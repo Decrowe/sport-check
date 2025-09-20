@@ -2,9 +2,10 @@
   "name": "sport-check",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
+    "serve": "ng serve",
     "build": "ng build",
+    "firebase-deploy": "pnpm run build && firebase deploy --only hosting",
+    "firebase-deploy-local": "pnpm run build && firebase emulators:start",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
