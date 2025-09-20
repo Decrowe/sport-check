@@ -13,7 +13,14 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    "paths": {
+      "@shared": ["./src/app/shared/index.ts"],
+      "@domains/daily-challange": ["./src/app/domains/daily-challange/index.ts"],
+      "@domains/daily-challange/enteties": ["./src/app/domains/daily-challange/enteties/index.ts"],
+      "@domains/daily-challange/features": ["./src/app/domains/daily-challange/features/index.ts"],
+      "@domains/daily-challange/services": ["./src/app/domains/daily-challange/services/index.ts"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
