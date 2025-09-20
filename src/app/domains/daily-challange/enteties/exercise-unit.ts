@@ -1,1 +1,1 @@
-export type ExerciseUnit = 'reps' | 'seconds';
+export type ExerciseUnit = 'repeatitions' | 'seconds';
