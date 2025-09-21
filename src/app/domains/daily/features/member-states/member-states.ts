@@ -7,7 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSliderModule } from '@angular/material/slider';
 import { Exercise, ExerciseState, Member } from '@domains/daily/enteties';
-import { ExersiceService, MemberService } from '@domains/daily/services';
+import { ExersiceService } from '@domains/daily/services';
+import { MemberService } from '@domains/members';
 import { FirebaseService } from '@shared';
 
 @Component({
