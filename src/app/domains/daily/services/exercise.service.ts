@@ -8,11 +8,13 @@ const mockExercises: Exercise[] = [
   { id: 3, name: 'Plank', target: 100, unit: 'seconds' },
 ];
 
-const mockExerciseStates: ExerciseState[] = [
-  { exerciseId: 1, memberId: 1, completed: false, date: new Date() },
-  { exerciseId: 1, memberId: 2, completed: false, date: new Date() },
-  { exerciseId: 2, memberId: 1, completed: false, date: new Date() },
-  { exerciseId: 2, memberId: 2, completed: false, date: new Date() },
+const MockStates: ExerciseState[] = [
+  { exerciseId: 1, memberId: 1, progress: 10, date: new Date() },
+  { exerciseId: 1, memberId: 2, progress: 20, date: new Date() },
+  { exerciseId: 2, memberId: 1, progress: 30, date: new Date() },
+  { exerciseId: 2, memberId: 2, progress: 40, date: new Date() },
+  { exerciseId: 3, memberId: 1, progress: 50, date: new Date() },
+  { exerciseId: 3, memberId: 2, progress: 60, date: new Date() },
 ];
 
 @Injectable({
@@ -22,7 +24,7 @@ export class ExersiceService {
   private _exercises = signal<Exercise[]>(mockExercises);
   readonly exercises = computed(() => deepClone(this._exercises()));
 
-  private _exerciseStates = signal<ExerciseState[]>(mockExerciseStates);
+  private _exerciseStates = signal<ExerciseState[]>(MockStates);
   readonly exerciseStates = computed(() => deepClone(this._exerciseStates()));
 
   constructor() {}
@@ -32,10 +34,10 @@ export class ExersiceService {
   private deleteExercise() {}
   private createExercise() {}
 
-  exerciseDone(exerciseId: number, memberId: number): void {
+  setStateProgress(exerciseId: number, memberId: number, progress: number): void {
     this._exerciseStates.update((states) =>
       states.map((s) =>
-        s.exerciseId === exerciseId && s.memberId === memberId ? { ...s, completed: true } : s
+        s.exerciseId === exerciseId && s.memberId === memberId ? { ...s, progress } : s
       )
     );
   }

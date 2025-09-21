@@ -1,1 +1,30 @@
-<p>member-states works!</p>
+@for (member of members(); track member.id) {
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ member.name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @for (state of getMemberStates(member.id); track $index) {
+    @if(getExercise(state.exerciseId); as exercise) {
+    <div class="exercise-state">
+      <span class="exercise-name">{{exercise.name}}</span>
+      <div class="progress-slider">
+        <span>0</span>
+        <mat-slider [showTickMarks]="true" min="0" [max]="exercise.target" step="1" discrete
+          [displayWith]="formatlabel">
+          <input matSliderThumb [value]="state.progress"
+            (change)="onProgressChanged(exercise.id, member.id, +$event.target.value)" />
+        </mat-slider>
+        <span>{{exercise.target}}</span>
+      </div>
+      <span class="complete-button">
+        <mat-checkbox [checked]="state.progress >= 100"
+          (change)="onProgressChanged(exercise.id, member.id, $event.checked ? 100 : 0)">
+        </mat-checkbox>
+      </span>
+    </div>
+    }
+    }
+  </mat-card-content>
+</mat-card>
+}

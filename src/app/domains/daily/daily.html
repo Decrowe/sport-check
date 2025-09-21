@@ -1,10 +1,25 @@
 <div class="daily">
-  <!-- Section 1: Exercises -->
   <section class="exercises-section">
-    <app-exercises></app-exercises>
+
+    <mat-expansion-panel #exercisesPanel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Daily Exercises
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-exercises></app-exercises>
+    </mat-expansion-panel>
   </section>
-  <!-- Section 2: Users and Their Exercise States (without table) -->
-  <section class="users-section">
+
+  <mat-divider class="section-divider"></mat-divider>
+
+  <section>
+
+  </section>
+
+  <mat-divider class="section-divider"></mat-divider>
+
+  <section class="member-section">
     <app-member-states></app-member-states>
   </section>
 </div>

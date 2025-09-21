@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -32,6 +32,7 @@ export class Exercises {
   private service = inject(ExersiceService);
   private formBuilder = inject(FormBuilder);
 
+  readonly expensionPanel = viewChild.required(MatExpansionPanel);
   readonly selectedExerciseId = signal<number | undefined>(undefined);
   readonly editing = this.selectedExerciseId;
 
@@ -84,6 +85,7 @@ export class Exercises {
     const { id, name, target, unit } = exercise;
     this.exerciseGroup.patchValue({ name, target, unit });
     this.selectedExerciseId.set(id);
+    this.expensionPanel().open();
   }
 
   onSubmit() {
