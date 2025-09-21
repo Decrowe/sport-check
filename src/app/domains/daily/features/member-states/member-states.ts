@@ -11,6 +11,7 @@ import { ExersiceService } from '@domains/daily/services';
 import { MemberService } from '@domains/members';
 import { Member } from '@domains/members/enteties';
 import { FirebaseService } from '@shared';
+import { Toolbar } from '../toolbar/toolbar';
 
 @Component({
   selector: 'app-member-states',
@@ -22,6 +23,7 @@ import { FirebaseService } from '@shared';
     MatSliderModule,
     MatCheckboxModule,
     NgClass,
+    Toolbar,
   ],
   templateUrl: './member-states.html',
   styleUrl: './member-states.scss',
