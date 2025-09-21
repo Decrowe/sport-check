@@ -25,7 +25,7 @@
 
 <ng-template #navItem let-item>
   <a mat-list-item [routerLink]="item.route" routerLinkActive="active-sidenav-item"
-    [routerLinkActiveOptions]="{ exact: true }">
+    [routerLinkActiveOptions]="{ exact: true }" [disabled]="item.disabled ?? false">
     <div class="navigation__anchor-content">
       @if (item.icon) {
       <mat-icon>{{ item.icon }}</mat-icon>

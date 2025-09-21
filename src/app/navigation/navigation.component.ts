@@ -29,8 +29,21 @@ const SideNavDaily: SideNavItem = {
   children: [SideNavDailyExercises, SideNavDailyStates],
 };
 
+const SideNavActivities: SideNavItem = {
+  label: 'Activities',
+  route: 'activities',
+  icon: 'directions_run',
+  disabled: true,
+};
+const SideNavChallenges: SideNavItem = {
+  label: 'Challenges',
+  route: 'challenges',
+  icon: 'emoji_events',
+  disabled: true,
+};
+
 const SideNav: SideNavConfig = {
-  items: [SideNavDaily],
+  items: [SideNavDaily, SideNavActivities, SideNavChallenges],
 };
 
 @Component({

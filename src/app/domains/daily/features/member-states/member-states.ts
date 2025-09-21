@@ -8,6 +8,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSliderModule } from '@angular/material/slider';
 import { Exercise, ExerciseState, Member } from '@domains/daily/enteties';
 import { ExersiceService, MemberService } from '@domains/daily/services';
+import { FirebaseService } from '@shared';
 
 @Component({
   selector: 'app-member-states',
@@ -26,9 +27,11 @@ import { ExersiceService, MemberService } from '@domains/daily/services';
 export class MemberStates {
   readonly exersiceService = inject(ExersiceService);
   readonly memberService = inject(MemberService);
+  readonly fire = inject(FirebaseService);
 
   readonly members = this.memberService.members;
   readonly states = this.exersiceService.todaysExerciseStates;
+
   readonly exercises = this.exersiceService.exercises;
 
   formatlabel = (value: number) => value.toString();
