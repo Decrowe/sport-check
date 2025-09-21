@@ -1,0 +1,13 @@
+:host {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+#next-day-button,
+#prev-day-button {
+  position: relative;
+  top: -10px;
+}

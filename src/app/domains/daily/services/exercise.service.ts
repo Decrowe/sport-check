@@ -21,18 +21,30 @@ const MockStates: ExerciseState[] = [
   providedIn: 'root',
 })
 export class ExersiceService {
+  private _date = signal(new Date());
+  readonly date = computed(() => {
+    return deepClone(this._date());
+  });
+
   private _exercises = signal<Exercise[]>(mockExercises);
   readonly exercises = computed(() => deepClone(this._exercises()));
 
   private _exerciseStates = signal<ExerciseState[]>(MockStates);
   readonly exerciseStates = computed(() => deepClone(this._exerciseStates()));
-
-  constructor() {}
+  readonly todaysExerciseStates = computed(() =>
+    deepClone(
+      this._exerciseStates().filter(({ date }) => date.toString() === this._date().toString())
+    )
+  );
 
   private getExercises() {}
   private updateExercise() {}
   private deleteExercise() {}
   private createExercise() {}
+
+  setDate(date: Date) {
+    this._date.set(date);
+  }
 
   setStateProgress(exerciseId: number, memberId: number, progress: number): void {
     this._exerciseStates.update((states) =>

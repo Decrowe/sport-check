@@ -26,7 +26,7 @@ export class MemberStates {
   readonly memberService = inject(MemberService);
 
   readonly members = this.memberService.members;
-  readonly states = this.exersiceService.exerciseStates;
+  readonly states = this.exersiceService.todaysExerciseStates;
   readonly exercises = this.exersiceService.exercises;
 
   formatlabel = (value: number) => value.toString();

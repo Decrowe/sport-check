@@ -15,7 +15,7 @@
           <input matSliderThumb [value]="state.progress"
             (change)="onProgressChanged(exercise.id, member.id, +$event.target.value)" />
         </mat-slider>
-        <span>{{exercise.target}}</span>
+        <span>{{exercise.target}} ({{state.progress}})</span>
       </div>
       <span class="complete-button">
         <mat-checkbox [checked]="state.progress >= 100"
