@@ -1,2 +1,2 @@
+export * from './exercise-progress.converter';
 export * from './exercise.converter';
-export * from './member.converter';

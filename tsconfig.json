@@ -22,6 +22,7 @@
       "@domains/members/features": ["./src/app/domains/members/features/index.ts"],
       "@domains/members/services": ["./src/app/domains/members/services/index.ts"],
       "@domains/members/infrastructure": ["./src/app/domains/members/infrastructure/index.ts"],
+      "@domains/members/shared": ["./src/app/domains/members/shared/index.ts"],
       "@domains/daily": ["./src/app/domains/daily/index.ts"],
       "@domains/daily/enteties": ["./src/app/domains/daily/enteties/index.ts"],
       "@domains/daily/features": ["./src/app/domains/daily/features/index.ts"],

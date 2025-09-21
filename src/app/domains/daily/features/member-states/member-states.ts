@@ -1,16 +1,15 @@
 import { NgClass } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSliderModule } from '@angular/material/slider';
-import { Exercise, ExerciseState } from '@domains/daily/enteties';
+import { Exercise, ExerciseProgress } from '@domains/daily/enteties';
 import { ExersiceService } from '@domains/daily/services';
 import { MemberService } from '@domains/members';
 import { Member } from '@domains/members/enteties';
-import { FirebaseService } from '@shared';
 import { Toolbar } from '../toolbar/toolbar';
 
 @Component({
@@ -31,17 +30,31 @@ import { Toolbar } from '../toolbar/toolbar';
 export class MemberStates {
   readonly exersiceService = inject(ExersiceService);
   readonly memberService = inject(MemberService);
-  readonly fire = inject(FirebaseService);
 
   readonly members = this.memberService.members;
-  readonly states = this.exersiceService.todaysExerciseStates;
+  readonly progresses = this.exersiceService.todaysExerciseProgresses;
+  readonly progressEditEnabled = this.exersiceService.progressEditEnabled;
 
   readonly exercises = this.exersiceService.exercises;
 
+  constructor() {
+    effect(() => {
+      if (!this.exersiceService.loadedProgresses()) return;
+      if (
+        this.members().length > 0 &&
+        this.exercises().length > 0 &&
+        this.progresses().length === 0
+      ) {
+        this.exersiceService.initExerciseProgresses(this.members().map(({ id }) => id));
+      }
+    });
+  }
   formatlabel = (value: number) => value.toString();
 
-  getMemberStates(memberId: string): ExerciseState[] {
-    return this.states().filter((s) => s.memberId === memberId);
+  getMemberStates(memberId: string): ExerciseProgress[] {
+    return this.progresses()
+      .filter((s) => s.memberId === memberId)
+      .sort((a, b) => a.exerciseId.localeCompare(b.exerciseId));
   }
   getExercise(exerciseId: string): Exercise | undefined {
     return this.exercises().find((e) => e.id === exerciseId);
@@ -51,15 +64,17 @@ export class MemberStates {
   }
 
   onProgressChanged(exerciseId: string, memberId: string, progress: number): void {
-    this.exersiceService.setStateProgress(exerciseId, memberId, progress);
+    this.exersiceService.setExerciseProgress(exerciseId, memberId, progress);
   }
 
   getExerciseProgressPercantage(exerciseId: string, memberId: string): number {
-    const state = this.states().find((s) => s.exerciseId === exerciseId && s.memberId === memberId);
+    const progress = this.progresses().find(
+      (s) => s.exerciseId === exerciseId && s.memberId === memberId
+    );
     const exercise = this.getExercise(exerciseId);
-    if (!state || !exercise) return 0;
+    if (!progress || !exercise) return 0;
 
-    return Math.round((state.progress / exercise.target) * 100);
+    return Math.round((progress.progress / exercise.target) * 100);
   }
 
   /**
