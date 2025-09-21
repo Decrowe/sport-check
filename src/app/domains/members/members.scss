@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  padding: 1rem;
+}
+
+.delete-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.member-form-section form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}

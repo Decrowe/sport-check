@@ -6,9 +6,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSliderModule } from '@angular/material/slider';
-import { Exercise, ExerciseState, Member } from '@domains/daily/enteties';
+import { Exercise, ExerciseState } from '@domains/daily/enteties';
 import { ExersiceService } from '@domains/daily/services';
 import { MemberService } from '@domains/members';
+import { Member } from '@domains/members/enteties';
 import { FirebaseService } from '@shared';
 
 @Component({

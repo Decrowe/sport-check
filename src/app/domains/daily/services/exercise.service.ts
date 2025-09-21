@@ -1,10 +1,9 @@
-import { v4 as uuidv4 } from 'uuid';
-
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { AddExercise, Exercise, ExerciseState } from '@domains/daily/enteties';
 import { ExerciseConverter } from '@domains/daily/infrastructure';
 import { collection, deleteDoc, doc, getDocs, setDoc } from '@firebase/firestore';
 import { deepClone, FirebaseService } from '@shared';
+import { v4 as uuidv4 } from 'uuid';
 
 const MockStates: ExerciseState[] = [
   { exerciseId: '1', memberId: '1', progress: 10, date: new Date() },
@@ -54,14 +53,14 @@ export class ExersiceService {
       this._exercises.set(exercises);
     });
   }
+  private createExercise(exercise: Exercise): Promise<Exercise> {
+    return setDoc(doc(this.db, 'daily_exercises', exercise.id), exercise).then(() => exercise);
+  }
   private updateExercise(exercise: Exercise): Promise<void> {
     return setDoc(doc(this.db, 'daily_exercises', exercise.id), exercise);
   }
   private deleteExercise(exerciseId: string): Promise<void> {
     return deleteDoc(doc(this.db, 'daily_exercises', exerciseId));
-  }
-  private createExercise(exercise: Exercise): Promise<Exercise> {
-    return setDoc(doc(this.db, 'daily_exercises', exercise.id), exercise).then(() => exercise);
   }
 
   setDate(date: Date) {

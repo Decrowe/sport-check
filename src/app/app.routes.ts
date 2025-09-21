@@ -19,6 +19,7 @@ export const routes: Routes = [
       },
     ],
   },
+  { path: 'members', loadComponent: () => import('@domains/members').then((m) => m.Members) },
   {
     path: '**',
     redirectTo: 'daily',
