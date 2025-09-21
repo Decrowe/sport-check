@@ -1,0 +1,57 @@
+.active-sidenav-item,
+.mat-nav-list .mat-list-item.active-sidenav-item {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.mat-nav-list .mat-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navigation {
+  &__anchor-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: smaller;
+  }
+
+  &__child-nav-list {
+    padding-left: 2rem;
+  }
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+  background-color: var(--mat-sys-surface-container-highest);
+  color: var(--mat-sys-on-surface);
+}
+
+.sidenav .mat-toolbar {
+  background: var(--mat-sys-surface-container-highest);
+  color: var(--mat-sys-on-surface);
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+}
+
+.mat-nav-list .mat-list-item {
+  color: var(--mat-sys-on-surface);
+  transition: background 0.2s;
+}
+
+.mat-nav-list .mat-list-item:hover {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}

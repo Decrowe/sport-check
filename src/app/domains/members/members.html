@@ -1,0 +1,47 @@
+<table mat-table [dataSource]="members()" class="mat-elevation-z8">
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let member"> {{member.name}} </td>
+  </ng-container>
+
+  <!-- Delete Column -->
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let member">
+      <div class="delete-btn-container">
+        <button mat-icon-button color="warn" (click)="onDeleteMember(member.id); $event.stopPropagation()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['name', 'delete']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['name', 'delete'];" (click)="onMemberSelected(row)"
+    style="cursor: pointer;"></tr>
+</table>
+
+<mat-expansion-panel #memberFormPanel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Add / Update Member
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <section class="member-form-section">
+    <form [formGroup]="memberGroup" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" placeholder="Member name" required>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">
+        {{editing() ? 'Save Changes':'Add Member'}}
+      </button>
+      @if(editing()) {
+      <button mat-raised-button color="accent" type="button" (click)="onAddMember()">
+        New <mat-icon>add</mat-icon>
+      </button>
+      }
+    </form>
+  </section>
+</mat-expansion-panel>

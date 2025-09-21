@@ -13,7 +13,22 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    "paths": {
+      "@environment": ["./environment/index.ts"],
+      "@shared": ["./src/app/shared/index.ts"],
+      "@domains/members": ["./src/app/domains/members/index.ts"],
+      "@domains/members/enteties": ["./src/app/domains/members/enteties/index.ts"],
+      "@domains/members/features": ["./src/app/domains/members/features/index.ts"],
+      "@domains/members/services": ["./src/app/domains/members/services/index.ts"],
+      "@domains/members/infrastructure": ["./src/app/domains/members/infrastructure/index.ts"],
+      "@domains/members/shared": ["./src/app/domains/members/shared/index.ts"],
+      "@domains/daily": ["./src/app/domains/daily/index.ts"],
+      "@domains/daily/enteties": ["./src/app/domains/daily/enteties/index.ts"],
+      "@domains/daily/features": ["./src/app/domains/daily/features/index.ts"],
+      "@domains/daily/services": ["./src/app/domains/daily/services/index.ts"],
+      "@domains/daily/infrastructure": ["./src/app/domains/daily/infrastructure/index.ts"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

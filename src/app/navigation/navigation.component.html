@@ -1,0 +1,43 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      @for (item of sidenavConfig().items; track item) {
+      <ng-container *ngTemplateOutlet="navItem; context: { $implicit: item }"></ng-container>
+      }
+    </mat-nav-list>
+
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" matIconButton (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Sports Check</span>
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+
+<ng-template #navItem let-item>
+  <a mat-list-item [routerLink]="item.route" routerLinkActive="active-sidenav-item"
+    [routerLinkActiveOptions]="{ exact: true }" [disabled]="item.disabled ?? false">
+    <div class="navigation__anchor-content">
+      @if (item.icon) {
+      <mat-icon>{{ item.icon }}</mat-icon>
+      }
+      <span>{{ item.label }}</span>
+    </div>
+  </a>
+  @if (item.children && item.children.length) {
+  <mat-nav-list class="navigation__child-nav-list">
+    @for (child of item.children; track child) {
+    <ng-container *ngTemplateOutlet="navItem; context: { $implicit: child }"></ng-container>
+    }
+  </mat-nav-list>
+  }
+</ng-template>
