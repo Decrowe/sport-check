@@ -1,30 +1,35 @@
 @for (member of members(); track member.id) {
-<mat-card>
+<mat-card [ngClass]="{'--completed': getDailyProgress(member.id) === 100}">
   <mat-card-header>
-    <mat-card-title>{{ member.name }}</mat-card-title>
+    <mat-card-title>
+      <span>{{ member.name }}</span>
+      @if(getDailyProgress(member.id) === 100)
+      {<mat-icon style="color: lime; float: inline-end;">check</mat-icon>}
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     @for (state of getMemberStates(member.id); track $index) {
     @if(getExercise(state.exerciseId); as exercise) {
-    <div class="exercise-state">
-      <span class="exercise-name">{{exercise.name}}</span>
-      <div class="progress-slider">
+    <div class="exercise">
+      <span class="exercise__name">{{exercise.name}}</span>
+      <div class="exercise__progress-slider">
         <span>0</span>
-        <mat-slider [showTickMarks]="true" min="0" [max]="exercise.target" step="1" discrete
+        <mat-slider [showTickMarks]="true" min="0" [max]="exercise.target" [step]="1" discrete
           [displayWith]="formatlabel">
           <input matSliderThumb [value]="state.progress"
             (change)="onProgressChanged(exercise.id, member.id, +$event.target.value)" />
         </mat-slider>
-        <span>{{exercise.target}} ({{state.progress}})</span>
+        <span>{{exercise.target}} ({{getExerciseProgressPercantage(exercise.id, member.id)}}%)</span>
+        <span class="exercise__complete">
+          <mat-checkbox [checked]="getExerciseProgressPercantage(exercise.id, member.id) === 100"
+            (change)="onProgressChanged(exercise.id, member.id, $event.checked ? exercise.target : 0)">
+          </mat-checkbox>
+        </span>
       </div>
-      <span class="complete-button">
-        <mat-checkbox [checked]="state.progress >= 100"
-          (change)="onProgressChanged(exercise.id, member.id, $event.checked ? 100 : 0)">
-        </mat-checkbox>
-      </span>
     </div>
     }
     }
+    <mat-progress-bar [class]="getSliderColorClass(member.id)" [value]="getDailyProgress(member.id)"></mat-progress-bar>
   </mat-card-content>
 </mat-card>
 }

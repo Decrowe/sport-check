@@ -1,10 +1,20 @@
+@use '@angular/material' as mat;
+
 :host {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
 }
 
-.exercise-state {
+mat-card {
+  &.--completed {
+    @include mat.card-overrides((elevated-container-color: rgba(lime, 0.1),
+      ));
+  }
+}
+
+.exercise {
   display: flex;
   width: 100%;
   align-items: center;
@@ -12,17 +22,13 @@
   gap: 0.5rem;
   flex-wrap: wrap;
 
-  .exercise-name {
+  &__name {
     width: 6rem;
     font-weight: 600;
   }
 
-  .complete-button {
-    width: 6rem;
-    text-align: center;
-  }
 
-  .progress-slider {
+  &__progress-slider {
     flex-grow: 1;
 
     display: flex;
@@ -33,5 +39,31 @@
     mat-slider {
       flex-grow: 1;
     }
+  }
+
+  &__complete {
+    width: 6rem;
+    text-align: center;
+  }
+
+
+
+}
+
+.daily-progress {
+  &__begin {
+    @include mat.progress-bar-overrides((active-indicator-color: cyan))
+  }
+
+  &__intermediate {
+    @include mat.progress-bar-overrides((active-indicator-color: orange))
+  }
+
+  &__advanced {
+    @include mat.progress-bar-overrides((active-indicator-color: gold))
+  }
+
+  &__completed {
+    @include mat.progress-bar-overrides((active-indicator-color: lime))
   }
 }
