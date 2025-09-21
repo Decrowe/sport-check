@@ -1,3 +1,28 @@
+.active-sidenav-item,
+.mat-nav-list .mat-list-item.active-sidenav-item {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.mat-nav-list .mat-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navigation {
+  &__anchor-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: smaller;
+  }
+
+  &__child-nav-list {
+    padding-left: 2rem;
+  }
+}
+
 .sidenav-container {
   height: 100%;
 }

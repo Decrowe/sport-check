@@ -19,7 +19,8 @@
           <input matSliderThumb [value]="state.progress"
             (change)="onProgressChanged(exercise.id, member.id, +$event.target.value)" />
         </mat-slider>
-        <span>{{exercise.target}} ({{getExerciseProgressPercantage(exercise.id, member.id)}}%)</span>
+        <span class="exercise__target-info">{{exercise.target}} ({{getExerciseProgressPercantage(exercise.id,
+          member.id)}}%)</span>
         <span class="exercise__complete">
           <mat-checkbox [checked]="getExerciseProgressPercantage(exercise.id, member.id) === 100"
             (change)="onProgressChanged(exercise.id, member.id, $event.checked ? exercise.target : 0)">

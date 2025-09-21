@@ -27,7 +27,6 @@ mat-card {
     font-weight: 600;
   }
 
-
   &__progress-slider {
     flex-grow: 1;
 
@@ -39,6 +38,13 @@ mat-card {
     mat-slider {
       flex-grow: 1;
     }
+  }
+
+  &__target-info {
+    width: 6rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--mat-sys-on-surface-variant);
   }
 
   &__complete {

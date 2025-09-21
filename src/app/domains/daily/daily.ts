@@ -1,17 +1,11 @@
-import { Component, OnInit, viewChild } from '@angular/core';
-import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
-import { Exercises, MemberStates, Toolbar } from '@domains/daily/features';
+import { Component } from '@angular/core';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-daily',
-  imports: [Exercises, MemberStates, Toolbar, MatExpansionModule],
+  imports: [MatExpansionModule, RouterOutlet],
   templateUrl: './daily.html',
   styleUrl: './daily.scss',
 })
-export class Daily implements OnInit {
-  readonly exercisesPanel = viewChild.required(MatExpansionPanel);
-
-  ngOnInit() {
-    this.exercisesPanel().expanded = false;
-  }
-}
+export class Daily {}
