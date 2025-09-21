@@ -36,21 +36,21 @@ export class MemberStates {
 
   formatlabel = (value: number) => value.toString();
 
-  getMemberStates(memberId: number): ExerciseState[] {
+  getMemberStates(memberId: string): ExerciseState[] {
     return this.states().filter((s) => s.memberId === memberId);
   }
-  getExercise(exerciseId: number): Exercise | undefined {
+  getExercise(exerciseId: string): Exercise | undefined {
     return this.exercises().find((e) => e.id === exerciseId);
   }
-  getMember(memberId: number): Member | undefined {
+  getMember(memberId: string): Member | undefined {
     return this.members().find((m) => m.id === memberId);
   }
 
-  onProgressChanged(exerciseId: number, memberId: number, progress: number): void {
+  onProgressChanged(exerciseId: string, memberId: string, progress: number): void {
     this.exersiceService.setStateProgress(exerciseId, memberId, progress);
   }
 
-  getExerciseProgressPercantage(exerciseId: number, memberId: number): number {
+  getExerciseProgressPercantage(exerciseId: string, memberId: string): number {
     const state = this.states().find((s) => s.exerciseId === exerciseId && s.memberId === memberId);
     const exercise = this.getExercise(exerciseId);
     if (!state || !exercise) return 0;
@@ -63,8 +63,7 @@ export class MemberStates {
    * @param memberId
    * @returns {number} percentage of overall daily progress
    */
-
-  getDailyProgress(memberId: number): number {
+  getDailyProgress(memberId: string): number {
     const memberStates = this.getMemberStates(memberId);
     if (memberStates.length === 0) return 0;
 
@@ -77,7 +76,7 @@ export class MemberStates {
     return Math.round(totalPercentage / memberStates.length);
   }
 
-  getSliderColorClass(memberId: number): string {
+  getSliderColorClass(memberId: string): string {
     const progress = this.getDailyProgress(memberId);
     if (progress < 33) return 'daily-progress__begin';
     if (progress < 67) return 'daily-progress__intermediate';

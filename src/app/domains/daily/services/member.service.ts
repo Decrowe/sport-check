@@ -3,8 +3,8 @@ import { Member } from '@domains/daily/enteties';
 import { deepClone } from '@shared';
 
 const MockMembers: Member[] = [
-  { id: 1, name: 'Lukas' },
-  { id: 2, name: 'Jonas' },
+  { id: '1', name: 'Lukas' },
+  { id: '2', name: 'Jonas' },
 ];
 
 @Injectable({

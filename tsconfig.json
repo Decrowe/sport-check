@@ -15,9 +15,11 @@
     "target": "ES2022",
     "module": "preserve",
     "paths": {
+      "@environment": ["./environment/index.ts"],
       "@shared": ["./src/app/shared/index.ts"],
       "@domains/daily": ["./src/app/domains/daily/index.ts"],
       "@domains/daily/enteties": ["./src/app/domains/daily/enteties/index.ts"],
+      "@domains/daily/infrastructure": ["./src/app/domains/daily/infrastructure/index.ts"],
       "@domains/daily/features": ["./src/app/domains/daily/features/index.ts"],
       "@domains/daily/services": ["./src/app/domains/daily/services/index.ts"]
     }

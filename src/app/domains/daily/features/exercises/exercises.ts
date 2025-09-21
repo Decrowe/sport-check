@@ -33,7 +33,7 @@ export class Exercises {
   private formBuilder = inject(FormBuilder);
 
   readonly expensionPanel = viewChild.required(MatExpansionPanel);
-  readonly selectedExerciseId = signal<number | undefined>(undefined);
+  readonly selectedExerciseId = signal<string | undefined>(undefined);
   readonly editing = this.selectedExerciseId;
 
   readonly exercises = this.service.exercises;
@@ -94,5 +94,9 @@ export class Exercises {
     } else {
       this.addExercise();
     }
+  }
+
+  onDeleteExercise(id: string) {
+    this.service.removeExercise(id);
   }
 }

@@ -8,6 +8,7 @@
   flex: 1 1 200px;
   min-width: 0;
 }
+
 // Show pointer cursor on table row hover
 table.mat-table tr.mat-row {
   cursor: pointer;
@@ -16,4 +17,18 @@ table.mat-table tr.mat-row {
 :host {
   display: block;
 
+}
+
+// Show delete button on row hover
+table.mat-table tr.mat-row:hover .delete-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+// Keep delete button at end of row using flex
+.delete-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
 }
