@@ -87,9 +87,11 @@ export class Progresses {
   openProgressDialog(member: Member) {
     const exercises = this.exercises();
     const progresses = this.getProgresses(member.id);
+    const currentUser = this.currentMember();
     const dialogRef = this.dialog.open(ProgressDialogComponent, {
       data: {
         memberId: member.id,
+        currentUserId: currentUser?.id,
         exercises,
         progresses,
       },

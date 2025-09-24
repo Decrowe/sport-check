@@ -9,6 +9,7 @@ import { Exercise, Progress } from '@domains/daily/enteties';
 
 export interface ProgressDialogData {
   memberId: string;
+  currentUserId?: string;
   exercises: Exercise[];
   progresses: Progress[];
 }
@@ -29,6 +30,7 @@ export interface ProgressDialogData {
 export class ProgressDialogComponent {
   readonly data: ProgressDialogData = inject(MAT_DIALOG_DATA);
   form: FormGroup;
+  readonlyMode: boolean;
 
   constructor(private dialogRef: MatDialogRef<ProgressDialogComponent>, private fb: FormBuilder) {
     this.form = this.fb.group({});
@@ -36,9 +38,16 @@ export class ProgressDialogComponent {
       const progress = this.data.progresses.find((p) => p.exerciseId === exercise.id);
       this.form.addControl(exercise.id, new FormControl(progress ? progress.progress : 0));
     });
+    this.readonlyMode = this.data.currentUserId !== this.data.memberId;
+    if (this.readonlyMode) {
+      this.form.disable();
+    }
   }
 
   setComplete(exerciseId: string, checked: boolean) {
+    if (this.readonlyMode) {
+      return;
+    }
     this.form.get(exerciseId)?.setValue(checked ? 100 : 0);
   }
 
