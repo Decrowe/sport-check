@@ -9,17 +9,29 @@ export class LoginService {
   readonly user = computed(() => (this._user() ? deepClone(this._user()) : undefined));
 
   constructor() {
-    const stored = localStorage.getItem('username');
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem('username');
+    } catch (e) {
+      // localStorage unavailable, ignore
+    }
     this._user.set(stored ? { name: stored } : undefined);
   }
 
   login(user: User) {
     this._user.set(user);
-    localStorage.setItem('username', user.name);
+    try {
+      localStorage.setItem('username', user.name);
+    } catch (e) {
+      // localStorage unavailable, ignore
+    }
   }
-
   logout() {
     this._user.set(undefined);
-    localStorage.removeItem('username');
+    try {
+      localStorage.removeItem('username');
+    } catch (e) {
+      // localStorage unavailable, ignore
+    }
   }
 }
