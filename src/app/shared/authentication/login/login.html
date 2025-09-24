@@ -1,0 +1,9 @@
+<div class="login-row login-question">
+  <span>Who are you?</span>
+</div>
+<form class="login-row login-form" (submit)="onLogin()">
+  <mat-form-field appearance="outline" class="login-input">
+    <input matInput [(ngModel)]="name" name="username" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit">Login</button>
+</form>

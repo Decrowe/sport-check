@@ -14,14 +14,16 @@ export const routes: Routes = [
         loadComponent: () => import('@domains/daily/features').then((m) => m.Progresses),
       },
       {
-        path: '**',
+        path: '',
+        pathMatch: 'full',
         redirectTo: 'progress',
       },
     ],
   },
   { path: 'members', loadComponent: () => import('@domains/members').then((m) => m.Members) },
   {
-    path: '**',
+    path: '',
+    pathMatch: 'full',
     redirectTo: 'daily',
   },
 ];

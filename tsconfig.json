@@ -17,6 +17,7 @@
     "paths": {
       "@environment": ["./environment/index.ts"],
       "@shared": ["./src/app/shared/index.ts"],
+      "@shared/authentication": ["./src/app/shared/authentication/index.ts"],
       "@domains/members": ["./src/app/domains/members/index.ts"],
       "@domains/members/enteties": ["./src/app/domains/members/enteties/index.ts"],
       "@domains/members/features": ["./src/app/domains/members/features/index.ts"],

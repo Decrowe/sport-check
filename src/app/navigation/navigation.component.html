@@ -1,7 +1,11 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+    <mat-toolbar>
+      <span>Menu</span>
+      <span class="spacer"></span>
+
+    </mat-toolbar>
     <mat-nav-list>
       @for (item of sidenavConfig().items; track item) {
       <ng-container *ngTemplateOutlet="navItem; context: { $implicit: item }"></ng-container>
@@ -11,10 +15,20 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
+      @if(user(); as user) {
       <button type="button" aria-label="Toggle sidenav" matIconButton (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
+      }
       <span>Sports Check</span>
+      <span class="toolbar-spacer"></span>
+      @if(user(); as user) {
+      <span class="user-name">{{ user.name }}</span>
+      <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      }
+
     </mat-toolbar>
     <router-outlet></router-outlet>
 
@@ -41,3 +55,11 @@
   </mat-nav-list>
   }
 </ng-template>
+
+
+<mat-menu #profileMenu="matMenu">
+  <button mat-menu-item (click)="onLogout()">
+    <mat-icon>logout</mat-icon>
+    <span>Logout</span>
+  </button>
+</mat-menu>
