@@ -80,7 +80,8 @@ export class Progresses {
     return this.members().find((m) => m.id === memberId);
   }
   isCurrentMember(member: Member): boolean {
-    const current = this.currentMember?.();
+    const current = this.currentMember();
+
     return !!current && current.id === member.id;
   }
   openProgressDialog(member: Member) {
