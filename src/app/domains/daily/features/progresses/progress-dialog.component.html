@@ -6,13 +6,18 @@
       <mat-label>{{ exercise.name }}</mat-label>
       <input matInput type="number" min="0" max="100" [formControlName]="exercise.id" class="progress-input" />
     </mat-form-field>
-    <mat-checkbox [checked]="form.get(exercise.id)?.value === 100"
-      (change)="setComplete(exercise.id, $event.checked)"></mat-checkbox>
+    <mat-checkbox [checked]="form.get(exercise.id)?.value === 100" (change)="setComplete(exercise.id, $event.checked)"
+      [disabled]="readonlyMode"></mat-checkbox>
   </div>
   }
 
 </form>
 <div class="dialog-actions">
+  @if (!readonlyMode) {
   <button mat-button (click)="cancel()">Cancel</button>
   <button mat-raised-button color="primary" (click)="save()">Save</button>
+
+  } @else {
+  <button mat-button (click)="cancel()">Close</button>
+  }
 </div>
