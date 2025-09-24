@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Progress</h2>
+<form [formGroup]="form" (submit)="save()" mat-dialog-content>
+  @for (exercise of data.exercises; track $index) {
+  <div class="progress-row">
+    <mat-form-field>
+      <mat-label>{{ exercise.name }}</mat-label>
+      <input matInput type="number" min="0" max="100" [formControlName]="exercise.id" class="progress-input" />
+    </mat-form-field>
+    <mat-checkbox [checked]="form.get(exercise.id)?.value === 100"
+      (change)="setComplete(exercise.id, $event.checked)"></mat-checkbox>
+  </div>
+  }
+
+</form>
+<div class="dialog-actions">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
+</div>

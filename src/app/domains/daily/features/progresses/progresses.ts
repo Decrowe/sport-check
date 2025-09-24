@@ -1,8 +1,8 @@
-import { NgClass } from '@angular/common';
-import { Component, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSliderModule } from '@angular/material/slider';
@@ -11,6 +11,7 @@ import { ExersiceService } from '@domains/daily/services';
 import { MemberService } from '@domains/members';
 import { Member } from '@domains/members/enteties';
 import { Toolbar } from '../toolbar/toolbar';
+import { ProgressDialogComponent } from './progress-dialog.component';
 
 @Component({
   selector: 'app-progresses',
@@ -21,18 +22,51 @@ import { Toolbar } from '../toolbar/toolbar';
     MatProgressBarModule,
     MatSliderModule,
     MatCheckboxModule,
-    NgClass,
     Toolbar,
   ],
   templateUrl: './progresses.html',
   styleUrl: './progresses.scss',
 })
 export class Progresses {
+  readonly dialog = inject(MatDialog);
+
+  openProgressDialog(member: Member) {
+    const exercises = this.exercises();
+    const progresses = this.getProgresses(member.id);
+    const dialogRef = this.dialog.open(ProgressDialogComponent, {
+      data: {
+        memberId: member.id,
+        exercises,
+        progresses,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result: Record<string, number> | undefined) => {
+      if (result)
+        Object.entries(result).forEach(([exerciseId, progress]) => {
+          this.onProgressChanged(exerciseId, member.id, Number(progress));
+        });
+    });
+  }
+  /**
+   * Returns a color for the progress circle based on percentage
+   */
+  getCircleColor(progress: number): string {
+    if (progress < 33) return 'cyan';
+    if (progress < 67) return 'orange';
+    if (progress < 99) return 'gold';
+    return 'lime';
+  }
   readonly exersiceService = inject(ExersiceService);
   readonly memberService = inject(MemberService);
 
   readonly members = this.memberService.members;
+  readonly sortedMembers = computed(() =>
+    this.members()
+      .slice()
+      .sort((a, b) => this.getDailyProgress(b.id) - this.getDailyProgress(a.id))
+  );
   readonly progresses = this.exersiceService.todaysExerciseProgresses;
+
   readonly progressEditEnabled = this.exersiceService.progressEditEnabled;
 
   readonly exercises = this.exersiceService.exercises;
