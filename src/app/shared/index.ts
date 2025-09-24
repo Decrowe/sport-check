@@ -1,3 +1,3 @@
-export * from './enteties';
+export * from './entities';
 export * from './helpers';
 export * from './services';

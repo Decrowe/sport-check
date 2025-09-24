@@ -3,8 +3,6 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>
       <span>Menu</span>
-      <span class="spacer"></span>
-
     </mat-toolbar>
     <mat-nav-list>
       @for (item of sidenavConfig().items; track item) {
