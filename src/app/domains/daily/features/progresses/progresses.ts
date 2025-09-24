@@ -10,6 +10,7 @@ import { Exercise, Progress } from '@domains/daily/enteties';
 import { ExersiceService } from '@domains/daily/services';
 import { MemberService } from '@domains/members';
 import { Member } from '@domains/members/enteties';
+import { LoginService } from '@shared/authentication';
 import { Toolbar } from '../toolbar/toolbar';
 import { ProgressDialogComponent } from './progress-dialog.component';
 
@@ -28,34 +29,16 @@ import { ProgressDialogComponent } from './progress-dialog.component';
   styleUrl: './progresses.scss',
 })
 export class Progresses {
+  readonly loginService = inject(LoginService);
+
   readonly dialog = inject(MatDialog);
 
-  openProgressDialog(member: Member) {
-    const exercises = this.exercises();
-    const progresses = this.getProgresses(member.id);
-    const dialogRef = this.dialog.open(ProgressDialogComponent, {
-      data: {
-        memberId: member.id,
-        exercises,
-        progresses,
-      },
-    });
-    dialogRef.afterClosed().subscribe((result: Record<string, number> | undefined) => {
-      if (result)
-        Object.entries(result).forEach(([exerciseId, progress]) => {
-          this.onProgressChanged(exerciseId, member.id, Number(progress));
-        });
-    });
+  currentMember(): Member | undefined {
+    const user = this.loginService.user();
+    if (!user) return undefined;
+    return this.members().find((m) => m.name === user.name);
   }
-  /**
-   * Returns a color for the progress circle based on percentage
-   */
-  getCircleColor(progress: number): string {
-    if (progress < 33) return 'cyan';
-    if (progress < 67) return 'orange';
-    if (progress < 99) return 'gold';
-    return 'lime';
-  }
+
   readonly exersiceService = inject(ExersiceService);
   readonly memberService = inject(MemberService);
 
@@ -95,6 +78,40 @@ export class Progresses {
   }
   getMember(memberId: string): Member | undefined {
     return this.members().find((m) => m.id === memberId);
+  }
+  isCurrentMember(member: Member): boolean {
+    const current = this.currentMember?.();
+    return !!current && current.id === member.id;
+  }
+  openProgressDialog(member: Member) {
+    const exercises = this.exercises();
+    const progresses = this.getProgresses(member.id);
+    const dialogRef = this.dialog.open(ProgressDialogComponent, {
+      data: {
+        memberId: member.id,
+        exercises,
+        progresses,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result: Record<string, number> | undefined) => {
+      if (result)
+        Object.entries(result).forEach(([exerciseId, progress]) => {
+          this.onProgressChanged(exerciseId, member.id, Number(progress));
+        });
+    });
+  }
+
+  getCircleColor(progress: number): string {
+    if (progress < 33) return 'cyan';
+    if (progress < 67) return 'orange';
+    if (progress < 99) return 'gold';
+    return 'lime';
+  }
+  openCurrentUserDialog() {
+    const member = this.currentMember();
+    if (member) {
+      this.openProgressDialog(member);
+    }
   }
 
   onProgressChanged(exerciseId: string, memberId: string, progress: number): void {
