@@ -10,12 +10,12 @@ export const routes: Routes = [
         loadComponent: () => import('@domains/daily/features').then((m) => m.Exercises),
       },
       {
-        path: 'states',
-        loadComponent: () => import('@domains/daily/features').then((m) => m.MemberStates),
+        path: 'progress',
+        loadComponent: () => import('@domains/daily/features').then((m) => m.Progresses),
       },
       {
         path: '**',
-        redirectTo: 'states',
+        redirectTo: 'progress',
       },
     ],
   },

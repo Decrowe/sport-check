@@ -6,14 +6,14 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSliderModule } from '@angular/material/slider';
-import { Exercise, ExerciseProgress } from '@domains/daily/enteties';
+import { Exercise, Progress } from '@domains/daily/enteties';
 import { ExersiceService } from '@domains/daily/services';
 import { MemberService } from '@domains/members';
 import { Member } from '@domains/members/enteties';
 import { Toolbar } from '../toolbar/toolbar';
 
 @Component({
-  selector: 'app-member-states',
+  selector: 'app-progresses',
   imports: [
     MatCardModule,
     MatIconModule,
@@ -24,10 +24,10 @@ import { Toolbar } from '../toolbar/toolbar';
     NgClass,
     Toolbar,
   ],
-  templateUrl: './member-states.html',
-  styleUrl: './member-states.scss',
+  templateUrl: './progresses.html',
+  styleUrl: './progresses.scss',
 })
-export class MemberStates {
+export class Progresses {
   readonly exersiceService = inject(ExersiceService);
   readonly memberService = inject(MemberService);
 
@@ -51,7 +51,7 @@ export class MemberStates {
   }
   formatlabel = (value: number) => value.toString();
 
-  getMemberStates(memberId: string): ExerciseProgress[] {
+  getProgresses(memberId: string): Progress[] {
     return this.progresses()
       .filter((s) => s.memberId === memberId)
       .sort((a, b) => a.exerciseId.localeCompare(b.exerciseId));
@@ -83,16 +83,16 @@ export class MemberStates {
    * @returns {number} percentage of overall daily progress
    */
   getDailyProgress(memberId: string): number {
-    const memberStates = this.getMemberStates(memberId);
-    if (memberStates.length === 0) return 0;
+    const progresses = this.getProgresses(memberId);
+    if (progresses.length === 0) return 0;
 
-    const totalPercentage = memberStates.reduce((acc, state) => {
-      const exercise = this.getExercise(state.exerciseId);
+    const totalPercentage = progresses.reduce((acc, progress) => {
+      const exercise = this.getExercise(progress.exerciseId);
       if (!exercise) return acc;
-      return acc + (state.progress / exercise.target) * 100;
+      return acc + (progress.progress / exercise.target) * 100;
     }, 0);
 
-    return Math.round(totalPercentage / memberStates.length);
+    return Math.round(totalPercentage / progresses.length);
   }
 
   getSliderColorClass(memberId: string): string {

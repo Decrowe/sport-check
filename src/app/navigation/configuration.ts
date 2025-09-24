@@ -6,16 +6,16 @@ export const SideNavDailyExercises: SideNavItem = {
   route: 'daily/exercises',
   icon: 'fitness_center',
 };
-export const SideNavDailyStates: SideNavItem = {
+export const SideNavDailyProgresses: SideNavItem = {
   label: 'Progress',
-  route: 'daily/states',
+  route: 'daily/progress',
   icon: 'bolt',
 };
 export const SideNavDaily: SideNavItem = {
   label: 'Daily',
   route: 'daily',
   icon: 'today',
-  children: [SideNavDailyExercises, SideNavDailyStates],
+  children: [SideNavDailyExercises, SideNavDailyProgresses],
 };
 
 export const SideNavActivities: SideNavItem = {

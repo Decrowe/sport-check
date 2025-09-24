@@ -1,3 +1,3 @@
 export * from './exercises/exercises';
-export * from './member-states/member-states';
+export * from './progresses/progresses';
 export * from './toolbar/toolbar';
