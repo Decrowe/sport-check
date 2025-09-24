@@ -1,11 +1,11 @@
-import { ExerciseProgress } from '@domains/daily/enteties';
+import { Progress } from '@domains/daily/enteties';
 import { FirestoreDataConverter } from '@firebase/firestore';
 
-export const ExerciseProgressConverter: FirestoreDataConverter<ExerciseProgress> = {
+export const ExerciseProgressConverter: FirestoreDataConverter<Progress> = {
   toFirestore: (exercise) => exercise,
   fromFirestore: (snapshot) => {
     const data = snapshot.data();
-    const exerciseProgress: ExerciseProgress = {
+    const exerciseProgress: Progress = {
       id: snapshot.id,
       exerciseId: data['exerciseId'],
       memberId: data['memberId'],

@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { AddExercise, Exercise, ExerciseProgress } from '@domains/daily/enteties';
+import { AddExercise, Exercise, Progress } from '@domains/daily/enteties';
 import { ExerciseConverter, ExerciseProgressConverter } from '@domains/daily/infrastructure';
 import {
   collection,
@@ -33,10 +33,10 @@ export class ExersiceService {
   private _exercises = signal<Exercise[]>([]);
   readonly exercises = computed(() => deepClone(this._exercises()));
 
-  private _exerciseProgresses = signal<ExerciseProgress[]>([]);
+  private _progresses = signal<Progress[]>([]);
   readonly todaysExerciseProgresses = computed(() =>
     deepClone(
-      this._exerciseProgresses().filter(({ date }) => {
+      this._progresses().filter(({ date }) => {
         const d = date instanceof Timestamp ? date.toDate() : date;
         return (
           d.getFullYear() === this._date().getFullYear() &&
@@ -94,21 +94,21 @@ export class ExersiceService {
     const exerciseProgressSnapshot = getDocs(q);
 
     exerciseProgressSnapshot.then((snapshot) => {
-      const exerciseProgress: ExerciseProgress[] = [];
+      const exerciseProgress: Progress[] = [];
       snapshot.forEach((doc) => {
-        exerciseProgress.push(doc.data() as ExerciseProgress);
+        exerciseProgress.push(doc.data() as Progress);
       });
-      this._exerciseProgresses.set(exerciseProgress);
+      this._progresses.set(exerciseProgress);
       this._loadedProgresses.set(true);
     });
   }
-  private createExerciseProgresses(progresses: ExerciseProgress[]): Promise<ExerciseProgress[]> {
+  private createExerciseProgresses(progresses: Progress[]): Promise<Progress[]> {
     const promises = progresses.map((progress) =>
       setDoc(doc(this.db, 'daily_exercise-progresses', progress.id), progress).then(() => progress)
     );
     return Promise.all(promises);
   }
-  private updateExerciseProgress(progress: ExerciseProgress): Promise<ExerciseProgress> {
+  private updateExerciseProgress(progress: Progress): Promise<Progress> {
     return setDoc(doc(this.db, 'daily_exercise-progresses', progress.id), progress).then(
       () => progress
     );
@@ -120,10 +120,10 @@ export class ExersiceService {
   }
 
   initExerciseProgresses = (memberIds: string[]): void => {
-    const progresses: ExerciseProgress[] = [];
+    const progresses: Progress[] = [];
     memberIds.forEach((memberId) => {
       this._exercises().forEach((exercise) => {
-        const progress: ExerciseProgress = {
+        const progress: Progress = {
           id: BuildExerciseProgressId(exercise.id, memberId, this._date()),
           exerciseId: exercise.id,
           memberId,
@@ -135,7 +135,7 @@ export class ExersiceService {
     });
 
     this.createExerciseProgresses(progresses).then((createdProgresses) => {
-      this._exerciseProgresses.update((existingProgresses) => [
+      this._progresses.update((existingProgresses) => [
         ...existingProgresses,
         ...createdProgresses,
       ]);
@@ -150,7 +150,7 @@ export class ExersiceService {
       date: Timestamp.fromDate(this._date()),
       id: BuildExerciseProgressId(exerciseId, memberId, this._date()),
     }).then(() => {
-      this._exerciseProgresses.update((progresses) =>
+      this._progresses.update((progresses) =>
         progresses.map((s) =>
           s.exerciseId === exerciseId && s.memberId === memberId ? { ...s, progress } : s
         )
@@ -182,8 +182,8 @@ export class ExersiceService {
       this._exercises.update((exercises) =>
         exercises.filter((exercise) => exercise.id !== removeId)
       );
-      this._exerciseProgresses.update((states) =>
-        states.filter((state) => state.exerciseId !== removeId)
+      this._progresses.update((progresses) =>
+        progresses.filter((progress) => progress.exerciseId !== removeId)
       );
     });
   }

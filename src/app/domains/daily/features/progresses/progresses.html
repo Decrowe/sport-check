@@ -11,15 +11,15 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    @for (state of getMemberStates(member.id); track $index) {
-    @if(getExercise(state.exerciseId); as exercise) {
+    @for (progress of getProgresses(member.id); track $index) {
+    @if(getExercise(progress.exerciseId); as exercise) {
     <div class="exercise">
       <span class="exercise__name">{{exercise.name}}</span>
       <div class="exercise__progress-slider">
         <span>0</span>
         <mat-slider [showTickMarks]="true" min="0" [max]="exercise.target" [step]="1" discrete
           [displayWith]="formatlabel" [disabled]="!progressEditEnabled()">
-          <input matSliderThumb [value]="state.progress"
+          <input matSliderThumb [value]="progress.progress"
             (change)="onProgressChanged(exercise.id, member.id, +$event.target.value)"
             [disabled]="!progressEditEnabled()" />
         </mat-slider>

@@ -1,6 +1,6 @@
 import { Timestamp } from '@firebase/firestore';
 
-export type ExerciseProgress = {
+export type Progress = {
   id: string;
   exerciseId: string;
   memberId: string;
