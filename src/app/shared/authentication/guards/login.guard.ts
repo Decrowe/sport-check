@@ -5,7 +5,7 @@ import { LoginService } from '../login/login.service';
 export const isLoggedIn: CanActivateFn = () => {
   const login = inject(LoginService);
   const router = inject(Router);
-  if (login.user()) {
+  if (login.member()) {
     return true;
   } else {
     return router.createUrlTree(['/login']);

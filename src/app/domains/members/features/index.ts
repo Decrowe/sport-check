@@ -1,1 +1,1 @@
-export * from './manage/manage';
+export * from './manage-members/manage-members';

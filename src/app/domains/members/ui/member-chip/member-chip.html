@@ -1,0 +1,17 @@
+@if (member(); as member) {
+
+<div class="chip">
+  <svg class="chip__progress-ring" width="120" height="120">
+    <circle class="chip__progress-ring__background" cx="60" cy="60" r="54" stroke-width="6" />
+    <!-- 2πr for r=54 -->
+    <circle class="chip__progress-ring__circle" cx="60" cy="60" r="54" stroke-width="6"
+      [attr.stroke-dasharray]="339.292" [attr.stroke-dashoffset]="339.292 - (progress() / 100) * 339.292"
+      [attr.stroke]="circleColor()" />
+  </svg>
+  <div class="chip__content">
+    <div class="chip__progress-percentage">{{ progress() }}%</div>
+    <div class="chip__name">{{ member.displayName }}</div>
+  </div>
+</div>
+
+}

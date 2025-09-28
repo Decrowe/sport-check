@@ -12,12 +12,12 @@ import { NavigationComponent } from './navigation/navigation.component';
 export class App {
   private router = inject(Router);
   private loginService = inject(LoginService);
-  readonly user = this.loginService.user;
+  readonly user = this.loginService.member;
 
   constructor() {
     effect(() => {
       if (this.user()) {
-        document.title = `Sports Check - ${this.user()!.name}`;
+        document.title = `Sports Check - ${this.user()!.displayName}`;
         this.router.navigateByUrl('');
       } else {
         document.title = 'Sports Check';

@@ -1,3 +1,2 @@
-export * from './exercises/exercises';
-export * from './progresses/progresses';
-export * from './toolbar/toolbar';
+export * from './manage-groups/manage-groups';
+export * from './progress/progress';

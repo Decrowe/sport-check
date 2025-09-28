@@ -1,6 +1,6 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset()) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset()) ? 'over' : 'side'" [opened]="sidenavOpened()">
     <mat-toolbar>
       <span>Menu</span>
     </mat-toolbar>
@@ -13,15 +13,15 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      @if(user(); as user) {
+      @if(currentMember(); as member) {
       <button type="button" aria-label="Toggle sidenav" matIconButton (click)="drawer.toggle()">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       }
       <span>Sports Check</span>
       <span class="toolbar-spacer"></span>
-      @if(user(); as user) {
-      <span class="user-name">{{ user.name }}</span>
+      @if(currentMember(); as member) {
+      <span class="member-name">{{ member.displayName }}</span>
       <button mat-icon-button [matMenuTriggerFor]="profileMenu">
         <mat-icon>account_circle</mat-icon>
       </button>
@@ -37,7 +37,7 @@
 
 <ng-template #navItem let-item>
   <a mat-list-item [routerLink]="item.route" routerLinkActive="active-sidenav-item"
-    [routerLinkActiveOptions]="{ exact: true }" [disabled]="item.disabled ?? false">
+    [routerLinkActiveOptions]="{ exact: false }" [disabled]="item.disabled ?? false">
     <div class="navigation__anchor-content">
       @if (item.icon) {
       <mat-icon>{{ item.icon }}</mat-icon>

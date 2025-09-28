@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>{{ data.group ? 'Edit: ' + data.group.name : 'New Group' }}</h2>
+<div mat-dialog-content class="dialog-content">
+  <form [formGroup]="form" class="group-form" (ngSubmit)="onSave()" id="groupDialogForm">
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" required placeholder="Name" title="Name" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" placeholder="Description" title="Description" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="half">
+      <mat-label>Exercises</mat-label>
+      <mat-select formControlName="exercises" multiple [compareWith]="exerciseCompare"
+        (selectionChange)="onExercisesChanged()">
+        @for (exercise of exercises(); track exercise.id) {
+        <mat-option [value]="{ id: exercise.id, goal: goalFor(exercise.id) }">{{ exercise.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="half">
+      <mat-label>Members</mat-label>
+      <mat-select formControlName="members" multiple>
+        @for (member of members(); track member.username) {
+        <mat-option [value]="member.username">{{ member.displayName }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    @if (form.value.exercises?.length) {
+    <div class="exercise-goals-block">
+      <h3>Exercise Goals</h3>
+      <div class="goals-grid">
+        @for (exercise of form.value.exercises; track exercise.id) {
+        <div class="goal-item">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ exerciseName(exercise.id) }}</mat-label>
+            <input matInput type="number" min="0" [value]="exercise.goal"
+              (input)="onGoalChange(exercise.id, $any($event.target).valueAsNumber)" placeholder="0" />
+            <span class="goal-unit" matSuffix>
+              <span class="unit-text">{{ exerciseUnit(exercise.id) | titlecase }}</span>
+              <button mat-icon-button type="button" class="remove-ex" aria-label="Remove exercise"
+                (click)="removeExercise(exercise.id)" tabindex="-1">
+                <mat-icon fontIcon="close"></mat-icon>
+              </button>
+            </span>
+          </mat-form-field>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">Cancel</button>
+  <button mat-raised-button color="primary" type="submit" form="groupDialogForm" [disabled]="form.invalid">
+    {{ data.group ? 'Save' : 'Create' }}
+  </button>
+</div>
