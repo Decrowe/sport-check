@@ -36,3 +36,59 @@
 button {
   bottom: 10px;
 }
+
+/* New styles for refined spacing */
+.login-wrapper {
+  width: 320px;
+  max-width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  /* base vertical rhythm */
+}
+
+mat-form-field.full {
+  width: 100%;
+  margin-bottom: .25rem;
+  /* tighten space below */
+}
+
+/* Reduce default Material subscript wrapper space */
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  padding: 0 16px 0 16px;
+  /* remove bottom padding */
+}
+
+::ng-deep .mat-mdc-form-field-error-wrapper,
+::ng-deep .mat-mdc-form-field-error {
+  margin-top: -2px;
+  /* pull error closer */
+  line-height: 1.1;
+  font-size: .72rem;
+}
+
+.error-box {
+  background: #ffeaea;
+  color: #b00020;
+  padding: .5rem .75rem;
+  border: 1px solid #ffb3b3;
+  border-radius: 4px;
+  font-size: .75rem;
+}
+
+.actions {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.actions button:first-child {
+  flex: 1 1 auto;
+}

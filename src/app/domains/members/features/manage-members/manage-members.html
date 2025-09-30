@@ -1,0 +1,49 @@
+<table mat-table [dataSource]="members()" class="mat-elevation-z8 members-table">
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let member" class="member-cell"
+      (click)="currentMember()?.username === member.username ? onMemberSelected(member) : null">
+      <span class="member-name" [class.is-current]="currentMember()?.username === member.username">
+        {{ member.displayName }}
+      </span>
+    </td>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef class="actions-header"></th>
+    <td mat-cell *matCellDef="let member" class="actions-cell">
+      @if (currentMember()?.username === member.username) {
+      <button mat-icon-button color="warn" aria-label="Delete account" confirmClick [confirmTitle]="'Delete Account'"
+        [confirmMessage]="'Are you sure you want to delete your account? This cannot be undone.'"
+        [confirmConfirmLabel]="'Delete'" [confirmDanger]="true" (confirmed)="onDeleteSelfConfirmed(member.username)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      }
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['name','actions']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['name','actions'];"
+    [class.selected]="currentMember()?.username === row.username" class="member-row"></tr>
+</table>
+<!--
+<mat-expansion-panel #memberFormPanel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Update
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <section class="form-section">
+    <form [formGroup]="memberGroup" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="displayName" placeholder="Member name" required>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">
+        Save Changes
+      </button>
+    </form>
+  </section>
+</mat-expansion-panel> -->

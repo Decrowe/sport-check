@@ -1,2 +1,2 @@
-export * from './members';
+export * from './members.routes';
 export { MemberService } from './services';

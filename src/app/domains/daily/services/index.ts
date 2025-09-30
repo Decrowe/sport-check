@@ -1,1 +1,2 @@
-export * from './exercise.service';
+export * from './group.service';
+export * from './progress.service';

@@ -1,1 +1,1 @@
-export * from './daily';
+export * from './daily.routes';
