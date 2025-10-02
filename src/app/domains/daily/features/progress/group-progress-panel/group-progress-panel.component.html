@@ -1,0 +1,13 @@
+<mat-card class="group-panel">
+  <div class="header">
+    <span class="name">{{ group?.name }}</span>
+    <span class="percent">{{ percent() | number: '1.0-0' }}%</span>
+  </div>
+  <mat-progress-bar mode="determinate" [value]="percent()"></mat-progress-bar>
+  <div class="actions">
+    <button mat-stroked-button color="primary" (click)="detail.emit(group)">
+      <mat-icon fontIcon="bar_chart"></mat-icon>
+      Detail
+    </button>
+  </div>
+</mat-card>

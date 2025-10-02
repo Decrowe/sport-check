@@ -1,0 +1,11 @@
+{
+  "id": "string",
+  "name": "string",
+  "description": "string",
+  "exercises": [
+    {
+      "id": "string",
+      "count": "number"
+    }
+  ]
+}

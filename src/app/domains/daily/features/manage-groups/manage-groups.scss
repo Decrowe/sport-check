@@ -1,0 +1,256 @@
+:host {
+  display: block;
+  padding: 1rem;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.list-header h2 {
+  font-weight: 500;
+  /* reduced from default bold */
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+/* Removed table layout in favor of accordion */
+.groups-accordion {
+  width: 100%;
+}
+
+.delete-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.form-section form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.join-leave {
+  line-height: 1;
+  padding: 0 .5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  font-size: .7rem;
+  height: 28px;
+}
+
+.actions-header {
+  text-align: right;
+}
+
+.actions-td {
+  padding-right: .5rem;
+}
+
+@media (max-width: 640px) {
+  .groups-accordion {
+    font-size: .85rem;
+  }
+}
+
+/* Accordion header layout */
+.mat-expansion-panel-header {
+  gap: .5rem;
+  align-items: center;
+  min-height: 48px;
+  padding-top: 2px;
+}
+
+.mat-expansion-panel-header .mat-content {
+  align-items: center;
+  display: flex;
+  width: 100%;
+  position: relative;
+  padding: 0;
+  /* reset */
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  gap: .25rem;
+}
+
+.toggle-btn {
+  flex: 0 0 auto;
+}
+
+.header-inner .group-name {
+  flex: 1 1 auto;
+  text-align: left;
+  padding: 0 .25rem 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  min-width: 0;
+  /* allow ellipsis when icon present */
+}
+
+/* In-group icon variant */
+.in-group-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: #4caf50;
+  opacity: 0;
+  /* reserve space */
+  transition: opacity .18s ease;
+  flex: 0 0 18px;
+}
+
+.in-group-icon.visible {
+  opacity: .95;
+}
+
+.header-actions {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+}
+
+/* Responsive visibility helpers */
+.hide-mobile {
+  display: inline-flex;
+}
+
+.show-mobile {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .show-mobile {
+    display: inline-flex !important;
+  }
+}
+
+/* Normalize icon button + stroked button alignment */
+.mat-expansion-panel-header button.mat-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Slightly increase join/leave button height so it optically centers with icon buttons */
+.mat-expansion-panel-header .join-leave {
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.group-name {
+  font-weight: 500;
+  /* reduced from 600 */
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Inline detail container shown only when expanded */
+/* Panel body styling */
+.panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: .5rem .5rem 1rem .5rem;
+}
+
+.detail-section h4 {
+  margin: 0 0 .25rem 0;
+  font-size: .75rem;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.detail-section p {
+  margin: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+
+.chip {
+  background: #ececec;
+  padding: .2rem .5rem;
+  border-radius: 12px;
+  font-size: .65rem;
+  line-height: 1;
+}
+
+.empty {
+  font-size: .65rem;
+  color: #999;
+}
+
+/* Chip styles reused */
+/* Mini exercises table */
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .7rem;
+}
+
+.mini-table th {
+  text-align: left;
+  font-weight: 600;
+  padding: .25rem .4rem;
+  border-bottom: 1px solid #ddd;
+  font-size: .6rem;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: #555;
+}
+
+.mini-table td {
+  padding: .25rem .4rem;
+  border-bottom: 1px solid #eee;
+}
+
+.mini-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.mini-table td.num {
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.mini-table td.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Courier New', monospace;
+  font-size: .6rem;
+}

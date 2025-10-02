@@ -1,0 +1,18 @@
+.group-panel {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}

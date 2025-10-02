@@ -1,0 +1,10 @@
+{
+  "memberid": "string",
+  "date": "string", //stored as ISO 8601 date string
+  "exercises": [
+    {
+      "id": "string",
+      "count": "number"
+    }
+  ]
+}

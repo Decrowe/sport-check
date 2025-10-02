@@ -1,0 +1,139 @@
+<div class="list-header">
+  <h2>Groups</h2>
+  <button mat-raised-button color="primary" (click)="onAddGroup()">
+    <mat-icon>add</mat-icon>
+    Add Group
+  </button>
+</div>
+<mat-accordion multi class="groups-accordion">
+  @for (group of groups(); track group.id) {
+  <mat-expansion-panel [expanded]="expandedGroupId() === group.id" (opened)="onOpened(group.id)"
+    (closed)="onClosed(group.id)" [hideToggle]="true">
+    <mat-expansion-panel-header>
+      <div class="header-inner" (click)="toggleExpand(group, $event)">
+        <span class="group-name">
+          {{ group.name }}
+          <mat-icon class="in-group-icon" [class.visible]="memberInGroup(group)"
+            [attr.aria-hidden]="!memberInGroup(group)" aria-label="You are a member">check_circle</mat-icon>
+        </span>
+        <span class="header-actions">
+          <!-- Inline actions (desktop) -->
+          <ng-container class="actions-inline">
+            @if (member()) {
+            @if (memberInGroup(group)) {
+            <button mat-icon-button color="accent" class="hide-mobile"
+              (click)="leaveGroup(group, $event); $event.stopPropagation()" aria-label="Leave group">
+              <mat-icon>group_remove</mat-icon>
+            </button>
+            } @else {
+            <button mat-icon-button color="primary" class="hide-mobile"
+              (click)="joinGroup(group, $event); $event.stopPropagation()" aria-label="Join group">
+              <mat-icon>group_add</mat-icon>
+            </button>
+            }
+            }
+            @if (member()?.username === group.ownerId) {
+            <button mat-icon-button color="primary" class="hide-mobile"
+              (click)="onGroupSelected(group); $event.stopPropagation()" aria-label="Edit group">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" class="hide-mobile"
+              (click)="onDeleteGroup(group.id); $event.stopPropagation()" aria-label="Delete group">
+              <mat-icon>delete</mat-icon>
+            </button>
+            }
+          </ng-container>
+          <!-- Menu trigger (mobile) -->
+          <button mat-icon-button [matMenuTriggerFor]="groupMenu" aria-label="Group actions"
+            (click)="$event.stopPropagation()" class="show-mobile">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </span>
+      </div>
+    </mat-expansion-panel-header>
+    <mat-menu #groupMenu="matMenu">
+      @if (member()) {
+      @if (memberInGroup(group)) {
+      <button mat-menu-item (click)="leaveGroup(group, $event)">
+        <mat-icon>group_remove</mat-icon>
+        <span>Leave Group</span>
+      </button>
+      } @else {
+      <button mat-menu-item (click)="joinGroup(group, $event)">
+        <mat-icon>group_add</mat-icon>
+        <span>Join Group</span>
+      </button>
+      }
+      }
+      @if (member()?.username === group.ownerId) {
+      <button mat-menu-item (click)="onGroupSelected(group)">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+      <button mat-menu-item (click)="onDeleteGroup(group.id)">
+        <mat-icon color="warn">delete</mat-icon>
+        <span>Delete</span>
+      </button>
+      }
+    </mat-menu>
+    <div class="panel-body">
+      @if (group.description) {
+      <div class="detail-section">
+        <h4>Description</h4>
+        <p>{{ group.description }}</p>
+      </div>
+      }
+
+      <div class="detail-section">
+        <h4>Exercises ({{ group.exercises.length }})</h4>
+        @if (group.exercises.length) {
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Goal</th>
+              <th>Unit</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (ex of group.exercises; track ex.id) {
+            <tr>
+              <td>{{ exerciseMap().get(ex.id)?.name || ex.id }}</td>
+              <td class="num">{{ ex.goal }}</td>
+              <td>{{ exerciseMap().get(ex.id)?.unit || '' }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+        } @else {
+        <span class="empty">No exercises</span>
+        }
+      </div>
+      <div class="detail-section">
+        <h4>Members ({{ group.members.length }})</h4>
+        @if (group.members.length) {
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (token of group.members; track token) {
+            <tr>
+              <td>{{ memberMap().get(token)?.displayName || token }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+        } @else {
+        <span class="empty">No members</span>
+        }
+      </div>
+      <div class="detail-section owner-line">
+        <small>Owner: {{ group.ownerName }}</small>
+      </div>
+    </div>
+  </mat-expansion-panel>
+  }
+</mat-accordion>

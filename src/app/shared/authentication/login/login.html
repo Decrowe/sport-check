@@ -1,0 +1,58 @@
+@if (initializing()) {
+<mat-progress-spinner gress-spinner mode="indeterminate"></mat-progress-spinner>
+}
+@else {
+
+
+
+@if (member()) {
+<div class="logged-in">
+  <p>Logged in as <strong>{{ member()?.displayName || member()?.username }}</strong></p>
+  <button mat-stroked-button color="primary" (click)="logout()">Logout</button>
+</div>
+} @else {
+<div class="login-wrapper" [class.submitting]="submitting()">
+  <h3>{{ mode() === 'login' ? 'Login' : 'Register' }}</h3>
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" autocomplete="username" placeholder="Username" title="Username" />
+      @if (form.controls.username.touched && form.controls.username.invalid) {
+      @if (form.controls.username.hasError('required')) {
+      <mat-error>Required</mat-error>
+      }
+      @if (form.controls.username.hasError('minlength')) {
+      <mat-error>Min length 2</mat-error>
+      }
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password" autocomplete="current-password" placeholder="Password"
+        title="Password" />
+      @if (form.controls.password.touched && form.controls.password.invalid) {
+      @if (form.controls.password.hasError('required')) {
+      <mat-error>Required</mat-error>
+      }
+      @if (form.controls.password.hasError('minlength')) {
+      <mat-error>Min length 4</mat-error>
+      }
+      }
+    </mat-form-field>
+
+    @if (error()) {
+    <div class="error-box">{{ error() }}</div>
+    }
+    <div class="actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || submitting()">
+        {{ mode() === 'login' ? 'Login' : 'Register' }}
+      </button>
+      <button mat-button type="button" (click)="switchMode()" [disabled]="submitting()">
+        {{ mode() === 'login' ? 'Need an account? Register' : 'Have an account? Login' }}
+      </button>
+    </div>
+  </form>
+</div>
+}
+}
