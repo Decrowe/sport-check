@@ -101,9 +101,11 @@ export class GroupDialogComponent {
    */
   onSave() {
     if (this.form.invalid) return;
-    const value = this.form.value as AddGroup; // shape without id
+    const formValue = this.form.value as AddGroup; // shape without id
+    const mergedValue: AddGroup = { ...this.data.group, ...formValue };
     const id = this.data.group?.id;
-    const result: AddGroup | Group = id ? ({ id, ...value } as Group) : value;
+
+    const result: AddGroup | Group = id ? ({ id, ...mergedValue } as Group) : mergedValue;
     this.ref.close(result);
   }
 }
