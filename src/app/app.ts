@@ -1,6 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoginService } from '@shared/authentication';
+import { Component, signal } from '@angular/core';
 import { NavigationComponent } from './navigation/navigation.component';
 
 @Component({
@@ -10,19 +8,5 @@ import { NavigationComponent } from './navigation/navigation.component';
   styleUrl: './app.scss',
 })
 export class App {
-  private router = inject(Router);
-  private loginService = inject(LoginService);
-  readonly user = this.loginService.member;
-
-  constructor() {
-    effect(() => {
-      if (this.user()) {
-        document.title = `Sports Check - ${this.user()!.displayName}`;
-        this.router.navigateByUrl('');
-      } else {
-        document.title = 'Sports Check';
-        this.router.navigateByUrl('/login');
-      }
-    });
-  }
+  protected readonly title = signal('sport-check');
 }

@@ -1,62 +1,64 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { MemberDataService } from '@domains/members/infrastructure';
-import { deepClone } from '@shared';
-import { Member } from '../models';
+import { MemberConverter } from '@domains/members/infrastructure';
+import { collection, deleteDoc, doc, getDocs, setDoc } from '@firebase/firestore';
+import { deepClone, FirebaseService } from '@shared';
+import { v4 as uuidv4 } from 'uuid';
+import { Member } from '../enteties';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MemberService {
-  private dataService = inject(MemberDataService);
+  private fire = inject(FirebaseService);
+  private db = this.fire.store;
 
   private _members = signal<Member[]>([]);
   readonly members = computed(() => deepClone(this._members()));
 
   constructor() {
-    this.loadMembers();
+    this.getMembers();
   }
 
-  loadMembers() {
-    this.dataService.getMembers().then((members) => {
+  private getMembers() {
+    const memberDB = collection(this.db, 'members').withConverter(MemberConverter);
+    const memberSnapshot = getDocs(memberDB);
+
+    memberSnapshot.then((snapshot) => {
+      const members: Member[] = [];
+      snapshot.forEach((doc) => {
+        members.push(doc.data() as Member);
+      });
       this._members.set(members);
     });
   }
-
   private createMember(member: Member): Promise<Member> {
-    return this.dataService.setMember(member);
+    return setDoc(doc(this.db, 'members', member.id), member).then(() => member);
   }
-
-  private updateMember(member: Member): Promise<Member> {
-    return this.dataService.setMember(member);
+  private updateMember(member: Member): Promise<void> {
+    return setDoc(doc(this.db, 'members', member.id), member);
   }
-
   private deleteMember(memberId: string): Promise<void> {
-    return this.dataService.deleteMember(memberId);
+    return deleteDoc(doc(this.db, 'members', memberId));
   }
 
-  addMember(member: { displayName: string }) {
-    const username = member.displayName.trim().toLowerCase();
-    this.createMember({ username, displayName: member.displayName }).then(() => {
-      this._members.update((members) => [
-        ...members,
-        { username, displayName: member.displayName },
-      ]);
+  addMember(member: { name: string }) {
+    const id = uuidv4();
+    this.createMember({ id, name: member.name }).then(() => {
+      this._members.update((members) => [...members, { id, name: member.name }]);
     });
   }
 
-  editMember(member: { username: string; displayName: string }) {
+  editMember(member: { id: string; name: string }) {
     this.updateMember(member).then(() => {
       this._members.update((members) =>
-        members.map((m) =>
-          m.username === member.username ? { ...m, displayName: member.displayName } : m
-        )
+        members.map((m) => (m.id === member.id ? { ...m, name: member.name } : m))
       );
     });
   }
 
-  removeMember(username: string) {
-    this.deleteMember(username).then(() => {
-      this._members.update((members) => members.filter((m) => m.username !== username));
+  removeMember(id: string) {
+    this.deleteMember(id).then(() => {
+      this._members.update((members) => members.filter((m) => m.id !== id));
     });
   }
 }

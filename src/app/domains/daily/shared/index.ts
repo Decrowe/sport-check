@@ -1,1 +1,1 @@
-export * from './ui';
+export * from './exercise-progress-id-builder';

@@ -1,1 +1,1 @@
-export * from './group.data.service';
+export * from './firebase-converter';

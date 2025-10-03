@@ -42,28 +42,3 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-
-/* Full screen group dialog with viewport margin */
-.full-screen-dialog.mat-mdc-dialog-panel {
-  --dialog-margin: 32px;
-  max-width: min(1100px, calc(100vw - var(--dialog-margin) * 2));
-  max-height: calc(100vh - var(--dialog-margin) * 2);
-  margin: var(--dialog-margin) auto;
-  /* horizontal auto to center */
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.full-screen-dialog .mdc-dialog__content {
-  padding: 1rem 1.25rem 1.25rem;
-}
-
-.full-screen-dialog .mdc-dialog__title {
-  padding: 1rem 1.25rem .5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, .08);
-}
-
-.full-screen-dialog .mdc-dialog__actions {
-  padding: .75rem 1.25rem 1rem;
-  border-top: 1px solid rgba(0, 0, 0, .08);
-}
