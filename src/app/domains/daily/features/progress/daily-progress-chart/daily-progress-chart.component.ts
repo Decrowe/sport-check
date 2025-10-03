@@ -10,6 +10,7 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js';
+import { ExerciseProgress } from '../../../models/exercise-progress';
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -22,14 +23,14 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, L
 })
 export class DailyProgressChartComponent {
   exercises = input<ExerciseKernal[]>([]);
-  progress = input<{ exerciseId: string; amount: number }[]>([]);
+  progress = input<ExerciseProgress[]>([]);
   canvasRef = viewChild<ElementRef<HTMLCanvasElement>>('canvas');
 
   private chart = signal<Chart | undefined>(undefined);
 
   data = computed(() => {
     const map = new Map<string, number>();
-    this.progress().forEach((progress) => map.set(progress.exerciseId, progress.amount));
+    this.progress().forEach(({ id, progress }) => map.set(id, progress));
     const labels = this.exercises().map((exercise) => exercise.name);
     const values = this.exercises().map((exercise) => map.get(exercise.id) || 0);
     return { labels, values };

@@ -1,4 +1,4 @@
-import { ExerciseGoal } from './exercise';
+import { ExerciseGoal } from './exercise-goal';
 
 export type GroupInfo = {
   name: string;

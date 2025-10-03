@@ -22,7 +22,7 @@ export class GroupProgressPanelComponent {
 
   private progressMap = computed(() => {
     const map = new Map<string, number>();
-    this.progressService.todaysProgress().forEach((p) => map.set(p.exerciseId, p.amount));
+    this.progressService.todaysProgress().forEach(({ id, progress }) => map.set(id, progress));
     return map;
   });
 

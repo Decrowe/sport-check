@@ -5,12 +5,14 @@ export const MemberExerciseProgressConverter: FirestoreDataConverter<MemberExerc
   toFirestore: (p) => ({ ...p }),
   fromFirestore: (snapshot) => {
     const data: any = snapshot.data();
-    return {
+    const memberProgress: MemberExerciseProgress = {
       memberId: data.memberId,
       date: data.date,
-      exercises: Array.isArray(data.exercises)
-        ? data.exercises.map((e: any) => ({ id: e.id, amount: Number(e.amount) || 0 }))
+      progresses: Array.isArray(data.progresses)
+        ? data.progresses.map((e: any) => ({ id: e.id, progress: e.progress ?? 0 }))
         : [],
-    } as MemberExerciseProgress;
+    };
+
+    return memberProgress;
   },
 };

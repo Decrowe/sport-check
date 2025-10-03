@@ -1,6 +1,7 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { deepClone, LoginService } from '@shared';
 import { MemberExerciseProgressDataService } from '../infrastructure/member-exercise-progress.data.service';
+import { ExerciseProgress } from '../models/exercise-progress';
 import { Group } from '../models/group';
 import { MemberExerciseProgress } from '../models/member-exercise-progress';
 
@@ -13,8 +14,11 @@ export class ProgressService {
 
   private _memmber = this.loginService.member;
 
-  private _group = signal<Group | undefined>(undefined);
-  readonly group = computed(() => deepClone(this._group()));
+  private _selectedGroup = signal<Group | undefined>(undefined);
+  readonly selectedGroup = computed(() => {
+    const group = this._selectedGroup();
+    return group ? deepClone(group) : undefined;
+  });
 
   private _date = signal(new Date());
   readonly date = computed(() => {
@@ -28,14 +32,12 @@ export class ProgressService {
     () => this._date().toDateString() === new Date().toDateString()
   );
 
-  private _todaysProgress = signal<{ exerciseId: string; amount: number }[]>([]);
+  private _todaysProgress = signal<ExerciseProgress[]>([]);
   readonly todaysProgress = computed(() => deepClone(this._todaysProgress()));
 
-  private _groupMembersProgress = signal<Map<string, { exerciseId: string; amount: number }[]>>(
-    new Map()
-  );
+  private _groupMembersProgress = signal<Map<string, ExerciseProgress[]>>(new Map());
   readonly groupMembersProgress = computed(() => {
-    const cloned = new Map<string, { exerciseId: string; amount: number }[]>();
+    const cloned = new Map<string, ExerciseProgress[]>();
     this._groupMembersProgress().forEach((v, k) => {
       cloned.set(
         k,
@@ -55,7 +57,7 @@ export class ProgressService {
     });
     effect(() => {
       const dateKey = this.dateKey();
-      const group = this._group();
+      const group = this._selectedGroup();
 
       if (!group) return;
       this.loadGroupMembersProgress(group, dateKey);
@@ -66,7 +68,7 @@ export class ProgressService {
     this._date.set(date);
   }
   setGroup(group: Group | undefined) {
-    this._group.set(group);
+    this._selectedGroup.set(group);
   }
 
   loadProgress(memberId: string, date?: string) {
@@ -77,12 +79,7 @@ export class ProgressService {
           this._todaysProgress.set([]);
           return;
         }
-        this._todaysProgress.set(
-          progress.exercises.map((exercise) => ({
-            exerciseId: exercise.id,
-            amount: exercise.amount,
-          }))
-        );
+        this._todaysProgress.set(progress.progresses);
       })
       .catch(() => this._todaysProgress.set([]));
   }
@@ -92,54 +89,47 @@ export class ProgressService {
         this.dataService.getMemberProgress(memberId, date ?? this.dateKey())
       )
     ).then((results) => {
-      const map = new Map<string, { exerciseId: string; amount: number }[]>();
+      const map = new Map<string, ExerciseProgress[]>();
       results.forEach((progress, idx) => {
         const memberId = group.members[idx];
-        map.set(
-          memberId,
-          progress
-            ? progress.exercises.map(({ id, amount }) => ({
-                exerciseId: id,
-                amount,
-              }))
-            : []
-        );
+        map.set(memberId, progress ? progress.progresses : []);
       });
 
       this._groupMembersProgress.set(map);
     });
   }
 
-  setExerciseProgress(memberId: string, exerciseId: string, amount: number) {
-    if (amount < 0) amount = 0;
-    const updated = [...this._todaysProgress()];
-    const idx = updated.findIndex((e) => e.exerciseId === exerciseId);
-    if (idx >= 0) updated[idx] = { exerciseId, amount };
-    else updated.push({ exerciseId, amount });
-    this._todaysProgress.set(updated);
+  setExerciseProgress(memberId: string, exerciseId: string, progress: number) {
+    if (progress < 0) progress = 0;
+    const updated = deepClone(this._todaysProgress());
+
+    const index = updated.findIndex((e) => e.id === exerciseId);
+    if (index >= 0) updated[index] = { id: exerciseId, progress };
+    else updated.push({ id: exerciseId, progress });
+    // this._todaysProgress.set(updated);
     // persist
     const record: MemberExerciseProgress = {
       memberId,
       date: this.dateKey(),
-      exercises: updated.map((e) => ({ id: e.exerciseId, amount: e.amount })),
+      progresses: updated.map((e) => ({ id: e.id, progress: e.progress })),
     };
     this.dataService.setMemberProgress(record).then((updated) => {
       if (updated) {
         this._todaysProgress.set(
-          updated.exercises.map((exercise) => ({
-            exerciseId: exercise.id,
-            amount: exercise.amount,
+          updated.progresses.map(({ id, progress }) => ({
+            id,
+            progress,
           }))
         );
         // Update groupMembersProgress map for current user if group is set
-        const group = this._group();
+        const group = this._selectedGroup();
         if (group && group.members.includes(memberId)) {
           const map = new Map(this._groupMembersProgress());
           map.set(
             memberId,
-            updated.exercises.map((exercise) => ({
-              exerciseId: exercise.id,
-              amount: exercise.amount,
+            updated.progresses.map(({ id, progress }) => ({
+              id,
+              progress,
             }))
           );
           this._groupMembersProgress.set(map);

@@ -55,7 +55,7 @@ export class GroupProgressChartComponent {
 
     memberMap.forEach((progress, memberId) => {
       const map = new Map<string, number>();
-      progress.forEach((p) => map.set(p.exerciseId, p.amount));
+      progress.forEach(({ id, progress }) => map.set(id, progress));
       datasets.push({
         label:
           this.members().find((member) => member.username === memberId)?.displayName || memberId,

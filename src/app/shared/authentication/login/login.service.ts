@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { deepClone, FirebaseService, MemberKernal } from '@shared';
+import { deepClone, MemberKernal } from '@shared';
 import { AuthService } from '../auth.service';
 
 const MemberIdKey = 'memberId';
@@ -10,7 +10,6 @@ const MemberNameKey = 'memberName';
 })
 export class LoginService {
   private auth = inject(AuthService);
-  private fire = inject(FirebaseService);
 
   private _member = signal<MemberKernal | undefined>(undefined);
   readonly member = computed(() => (this._member() ? deepClone(this._member()) : undefined));
