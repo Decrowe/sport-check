@@ -25,46 +25,52 @@
 }
 
 
-.scroll-area {
+.exercises-form {
   flex: 1;
   overflow-y: auto;
   min-height: 0; // ensures proper flexbox scroll behavior
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 0.75rem;
 }
 
-.exercise-header {
-  .check-icon {
-    float: right;
-    color: green;
-    opacity: 0.7;
+.exercise {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  &__header {
+    .check-icon {
+      float: right;
+      color: lime;
+      opacity: 0.7;
+    }
   }
-}
 
-.exercise-row {
-  display: flex;
-  justify-content: space-evenly;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
+  &__row {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 0.5rem;
+    flex-wrap: wrap;
 
-.exercise-input {
-  flex: 1 1 100%;
-}
+    &__goal-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-.goal-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+    &__input {
+      flex: 1 1 100%;
+    }
 
-.increment-buttons {
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
+    &__increment-buttons {
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
 
+    }
+  }
 }
 
 .close-button {
