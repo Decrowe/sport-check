@@ -1,6 +1,8 @@
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -13,10 +15,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ExerciseProgress } from '@domains/daily/models';
 import { GroupService, ProgressService } from '@domains/daily/services';
 import { ExerciseAPIService } from '@domains/exercises/API';
-import { ExerciseKernal, LoginService } from '@shared';
+import { deepClone, ExerciseKernal, LoginService } from '@shared';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 
 @Component({
@@ -31,6 +34,8 @@ import { debounceTime } from 'rxjs/internal/operators/debounceTime';
     MatChipsModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatProgressBarModule,
+    MatSlideToggleModule,
     ReactiveFormsModule,
     MatDividerModule,
     MatBadgeModule,
@@ -48,7 +53,11 @@ export class ExerciseListComponent {
   private sheetRef = inject(MatBottomSheetRef);
 
   readonly member = this.login.member;
-  readonly exercises = this.exerciseAPI.exercises;
+  readonly exercises = signal<ExerciseKernal[]>([]);
+  readonly groupExercises = computed(() =>
+    this.exercises().filter((ex) => this.isEcxerciseInGroups(ex.id))
+  );
+
   readonly todaysProgress = this.progressService.todaysProgress;
 
   readonly joinedGroups = this.groupService.joinedGroups;
@@ -56,9 +65,23 @@ export class ExerciseListComponent {
   readonly progressMap = signal(new Map<string, number>());
   readonly nextGoalMap = signal(new Map<string, number>());
 
+  readonly nonGroupExercisesHidden = signal(true);
+
   readonly exercisesGroup = new FormGroup({});
 
   constructor() {
+    const sortEffect = effect(() => {
+      //if contidtion needed since sorting relies on percentage value
+      if (this.nextGoalMap()) {
+        const sorted = deepClone(this.exerciseAPI.exercises()).sort(
+          (a, b) => this.getNextGoalPercentage(b.id) - this.getNextGoalPercentage(a.id)
+        );
+        this.exercises.set(sorted);
+        //Just once when data received
+        sortEffect.destroy();
+      }
+    });
+
     effect(() => this.initFormGroup(this.exercises()));
 
     effect(() => {
@@ -115,7 +138,7 @@ export class ExerciseListComponent {
       this.exercisesGroup.addControl(exercise.id, control);
 
       control.valueChanges
-        .pipe(takeUntilDestroyed(this.destroyRef), debounceTime(300))
+        .pipe(takeUntilDestroyed(this.destroyRef), debounceTime(500))
         .subscribe((value) => {
           this.onProgressChange(exercise.id, value);
         });
@@ -129,8 +152,33 @@ export class ExerciseListComponent {
     });
   }
 
+  getGroupNamesForExerciseGoalFormatted(exerciseId: string) {
+    const nextGoal = this.nextGoalMap().get(exerciseId);
+    if (nextGoal == null) return '';
+
+    // Return only the names of groups whose goal for this exercise equals the selected "next" goal
+    const names = this.joinedGroups()
+      .filter((group) => group.exercises.some((ex) => ex.id === exerciseId && ex.goal === nextGoal))
+      .map((group) => group.name);
+
+    return names.join(', ');
+  }
+
   getExerciseControl(exerciseId: string) {
     return this.exercisesGroup.get(exerciseId) as FormControl<number>;
+  }
+
+  getNextGoalPercentage(exerciseId: string) {
+    const nextGoal = this.nextGoalMap().get(exerciseId);
+    const currentProgress = this.progressMap().get(exerciseId) ?? 0;
+    if (!nextGoal) return 0;
+    return Math.fround(Math.min((currentProgress / nextGoal) * 100, 100));
+  }
+
+  isEcxerciseInGroups(exerciseId: string) {
+    return this.joinedGroups().some((group) =>
+      group.exercises.some((exercise) => exercise.id === exerciseId)
+    );
   }
 
   onProgressChange(exerciseId: string, amount: number) {

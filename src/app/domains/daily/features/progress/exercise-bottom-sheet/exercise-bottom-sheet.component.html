@@ -1,11 +1,20 @@
 <!-- Container provides full height flex layout -->
 <form (ngSubmit)="onSubmit()" [formGroup]="exercisesGroup" class="exercises-form">
-  @for (exercise of exercises(); track $index) {
+  @for (exercise of nonGroupExercisesHidden() ? groupExercises() :exercises() ; track $index) {
   <div class="exercise">
     <div class="exercise__header">
-      <mat-label>{{ exercise.name }}</mat-label>
-      @if (progressMap().get(exercise.id)! >= nextGoalMap().get(exercise.id)!) {
-      <mat-icon class="check-icon">check</mat-icon>
+      <mat-label class="exercise__header__name">{{ exercise.name }}</mat-label>
+      @if (nextGoalMap().get(exercise.id); as nextGoal) {
+      <div class="exercise__header__check-state">
+        @if (progressMap().get(exercise.id)! < nextGoal) { <span class="exercise__header__check-state__group-names">
+          {{getGroupNamesForExerciseGoalFormatted(exercise.id)}}
+          </span>
+          }
+          @if (progressMap().get(exercise.id)! >= nextGoalMap().get(exercise.id)!) {
+          <mat-icon>check</mat-icon>
+          }
+          {{ getNextGoalPercentage(exercise.id)}}%
+      </div>
       }
     </div>
 
@@ -38,8 +47,10 @@
   }
 </form>
 
-
-
+<mat-slide-toggle [checked]="nonGroupExercisesHidden()" (change)="nonGroupExercisesHidden.set($event.checked)"
+  [hideIcon]="true">
+  {{nonGroupExercisesHidden() ? 'Group Exercises' : 'All Exercises'}}
+</mat-slide-toggle>
 <button cdkFocusInitial class="close-button" mat-stroked-button type="button" (click)="onClose()">
   <mat-icon>close</mat-icon>
   Close
