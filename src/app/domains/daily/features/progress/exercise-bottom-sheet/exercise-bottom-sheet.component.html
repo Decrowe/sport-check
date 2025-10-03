@@ -15,7 +15,8 @@
         @if (nextGoalMap().get(exercise.id); as nextGoal ) {
         <span> / {{ nextGoal }}</span>
         }
-        <button matSuffix mat-icon-button aria-label="Reset" type="button" (click)="onProgressChange(exercise.id, 0)">
+        <button matSuffix mat-icon-button aria-label="Reset" type="button"
+          (click)="$event.stopPropagation(); onProgressChange(exercise.id, 0)">
           <mat-icon>refresh</mat-icon>
         </button>
       </div>
@@ -35,7 +36,7 @@
 
 
 
-<button class="close-button" mat-stroked-button type="button" (click)="onClose()">
+<button cdkFocusInitial class="close-button" mat-stroked-button type="button" (click)="onClose()">
   <mat-icon>close</mat-icon>
   Close
 </button>
