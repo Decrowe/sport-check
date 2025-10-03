@@ -3,16 +3,25 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: 'daily',
-    loadChildren: () => import('@domains/daily').then((m) => m.dailyRoutes),
+    loadComponent: () => import('@domains/daily').then((m) => m.Daily),
+    children: [
+      {
+        path: 'exercises',
+        loadComponent: () => import('@domains/daily/features').then((m) => m.Exercises),
+      },
+      {
+        path: 'states',
+        loadComponent: () => import('@domains/daily/features').then((m) => m.MemberStates),
+      },
+      {
+        path: '**',
+        redirectTo: 'states',
+      },
+    ],
   },
-  { path: 'members', loadChildren: () => import('@domains/members').then((m) => m.MemberRoutes) },
+  { path: 'members', loadComponent: () => import('@domains/members').then((m) => m.Members) },
   {
-    path: 'exercises',
-    loadChildren: () => import('@domains/exercises').then((m) => m.ExercisesRoutes),
-  },
-  {
-    path: '',
-    pathMatch: 'full',
+    path: '**',
     redirectTo: 'daily',
   },
 ];

@@ -1,21 +1,21 @@
 import { SideNavConfig } from './side-nav-config';
 import { SideNavItem } from './side-nav-item';
 
-export const SideNavDailyProgresses: SideNavItem = {
-  label: 'Progress',
-  route: 'daily/progress',
-  icon: 'bolt',
+export const SideNavDailyExercises: SideNavItem = {
+  label: 'Exercises',
+  route: 'daily/exercises',
+  icon: 'fitness_center',
 };
-export const SideNavDailyGroups: SideNavItem = {
-  label: 'Groups',
-  route: 'daily/groups',
-  icon: 'group_work',
+export const SideNavDailyStates: SideNavItem = {
+  label: 'Progress',
+  route: 'daily/states',
+  icon: 'bolt',
 };
 export const SideNavDaily: SideNavItem = {
   label: 'Daily',
   route: 'daily',
   icon: 'today',
-  children: [SideNavDailyProgresses, SideNavDailyGroups],
+  children: [SideNavDailyExercises, SideNavDailyStates],
 };
 
 export const SideNavActivities: SideNavItem = {
@@ -37,12 +37,6 @@ export const SideNavMembers: SideNavItem = {
   icon: 'group',
 };
 
-export const SideNavExercises: SideNavItem = {
-  label: 'Exercises',
-  route: 'exercises',
-  icon: 'fitness_center',
-};
-
 export const config: SideNavConfig = {
-  items: [SideNavDaily, SideNavActivities, SideNavChallenges, SideNavExercises, SideNavMembers],
+  items: [SideNavDaily, SideNavActivities, SideNavChallenges, SideNavMembers],
 };
