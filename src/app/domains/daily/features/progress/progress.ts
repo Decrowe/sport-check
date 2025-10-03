@@ -87,11 +87,7 @@ export class Progress {
   }
 
   onOpenExerciseSheet() {
-    this.bottomSheet.open(ExerciseListComponent, {
-      // data: {
-      //   exercises: this.exercises(),
-      //   progressMap: this.progressMap(),
-      // },
-    });
+    if (!this.editProgressEnabled()) return;
+    this.bottomSheet.open(ExerciseListComponent, {});
   }
 }

@@ -1,3 +1,4 @@
+import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -33,6 +34,7 @@ import { debounceTime } from 'rxjs/internal/operators/debounceTime';
     ReactiveFormsModule,
     MatDividerModule,
     MatBadgeModule,
+    A11yModule,
   ],
   templateUrl: './exercise-bottom-sheet.component.html',
   styleUrls: ['./exercise-bottom-sheet.component.scss'],
