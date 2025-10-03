@@ -1,41 +1,56 @@
 <!-- Container provides full height flex layout -->
-<form (ngSubmit)="onSubmit()" [formGroup]="exercisesGroup" class="scroll-area">
-  @for (exercise of exercises(); track $index) {
-  <div class="exercise-header">
-    <mat-label>{{ exercise.name }}</mat-label>
-    @if (progressMap().get(exercise.id)! >= nextGoalMap().get(exercise.id)!) {
-    <mat-icon class="check-icon">check</mat-icon>
-    }
-  </div>
-
-  <div class="exercise-row">
-    <mat-form-field class="exercise-input" appearance="outline">
-      <input matInput [formControl]="getExerciseControl(exercise.id)" type="number" min="0" />
-      <div matSuffix class="goal-info">
-        @if (nextGoalMap().get(exercise.id); as nextGoal ) {
-        <span> / {{ nextGoal }}</span>
-        }
-        <button matSuffix mat-icon-button aria-label="Reset" type="button"
-          (click)="$event.stopPropagation(); onProgressChange(exercise.id, 0)">
-          <mat-icon>refresh</mat-icon>
-        </button>
+<form (ngSubmit)="onSubmit()" [formGroup]="exercisesGroup" class="exercises-form">
+  @for (exercise of nonGroupExercisesHidden() ? groupExercises() :exercises() ; track $index) {
+  <div class="exercise">
+    <div class="exercise__header">
+      <mat-label class="exercise__header__name">{{ exercise.name }}</mat-label>
+      @if (nextGoalMap().get(exercise.id); as nextGoal) {
+      <div class="exercise__header__check-state">
+        @if (progressMap().get(exercise.id)! < nextGoal) { <span class="exercise__header__check-state__group-names">
+          {{getGroupNamesForExerciseGoalFormatted(exercise.id)}}
+          </span>
+          }
+          @if (progressMap().get(exercise.id)! >= nextGoalMap().get(exercise.id)!) {
+          <mat-icon>check</mat-icon>
+          }
+          {{ getNextGoalPercentage(exercise.id)}}%
       </div>
-    </mat-form-field>
-
-    <div class="increment-buttons">
-      <button mat-raised-button type="button" class="round-btn" (click)="onProgressIncrease(exercise.id, 5)">+5</button>
-      <button mat-raised-button type="button" class="round-btn"
-        (click)="onProgressIncrease(exercise.id, 10)">+10</button>
-      <button mat-raised-button type="button" class="round-btn"
-        (click)="onProgressIncrease(exercise.id, 25)">+25</button>
+      }
     </div>
+
+    <div class="exercise__row">
+      <mat-form-field class="exercise__row__input" appearance="outline">
+        <input matInput [formControl]="getExerciseControl(exercise.id)" type="number" min="0" />
+        <div matSuffix class="exercise__row__goal-info">
+          @if (nextGoalMap().get(exercise.id); as nextGoal ) {
+          <span> / {{ nextGoal }}</span>
+          }
+          <button matSuffix mat-icon-button aria-label="Reset" type="button"
+            (click)="$event.stopPropagation(); onProgressChange(exercise.id, 0)">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
+      </mat-form-field>
+
+      <div class="exercise__row__increment-buttons">
+        <button mat-raised-button type="button" class="round-btn"
+          (click)="onProgressIncrease(exercise.id, 5)">+5</button>
+        <button mat-raised-button type="button" class="round-btn"
+          (click)="onProgressIncrease(exercise.id, 10)">+10</button>
+        <button mat-raised-button type="button" class="round-btn"
+          (click)="onProgressIncrease(exercise.id, 25)">+25</button>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
   </div>
-  <mat-divider></mat-divider>
+
   }
 </form>
 
-
-
+<mat-slide-toggle [checked]="nonGroupExercisesHidden()" (change)="nonGroupExercisesHidden.set($event.checked)"
+  [hideIcon]="true">
+  {{nonGroupExercisesHidden() ? 'Group Exercises' : 'All Exercises'}}
+</mat-slide-toggle>
 <button cdkFocusInitial class="close-button" mat-stroked-button type="button" (click)="onClose()">
   <mat-icon>close</mat-icon>
   Close
