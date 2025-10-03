@@ -1,0 +1,76 @@
+@mixin hide-scrollbar {
+
+  /* Hide scrollbars for all descendants */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  gap: 1rem;
+  box-sizing: border-box;
+  padding: 1rem;
+
+
+  @include hide-scrollbar;
+}
+
+
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0; // ensures proper flexbox scroll behavior
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.exercise-header {
+  .check-icon {
+    float: right;
+    color: green;
+    opacity: 0.7;
+  }
+}
+
+.exercise-row {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.exercise-input {
+  flex: 1 1 100%;
+}
+
+.goal-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.increment-buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+
+}
+
+.close-button {
+  width: 100%;
+  position: sticky;
+  /* in case parent scroll changes later */
+  bottom: 0;
+  justify-content: center;
+}

@@ -1,15 +1,22 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { GroupDataService } from '@domains/daily/infrastructure';
-import { AddGroup, Group } from '@domains/daily/models';
-import { deepClone } from '@shared';
+import { AddGroup, Group, isMemberOfGroup } from '@domains/daily/models';
+import { deepClone, LoginService } from '@shared';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({ providedIn: 'root' })
 export class GroupService {
+  private loginService = inject(LoginService);
+  private dataService = inject(GroupDataService);
+
   private _groups = signal<Group[]>([]);
   readonly groups = computed(() => deepClone(this._groups()));
 
-  private dataService = inject(GroupDataService);
+  readonly joinedGroups = computed(() => {
+    const member = this.loginService.member();
+    if (!member) return [];
+    return this.groups().filter((group) => isMemberOfGroup(member.username, group));
+  });
 
   constructor() {
     this.loadGroups();

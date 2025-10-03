@@ -1,13 +1,13 @@
 <app-toolbar></app-toolbar>
 <!-- Section 1: Charts -->
-<div class="section charts">
-  <h3>{{ selectedGroup()?.name ?? 'Your Progress' }}</h3>
-  @if (!selectedGroup()) {
+<div class="charts">
+  <h3>{{ group()?.name ?? 'Your Progress' }}</h3>
+  @if (!group()) {
   <app-daily-progress-chart [exercises]="exercises()" [progress]="todaysProgress()" />
   } @else {
-  <app-group-progress-chart [group]="selectedGroup()" />
+  <app-group-progress-chart [group]="group()" />
   }
-  @if(selectedGroup()){
+  @if(group()){
   <button mat-stroked-button (click)="onClearGroup()">
     <mat-icon fontIcon="arrow_back"></mat-icon>
     Back
@@ -20,20 +20,17 @@
 <!-- Section 2: Group panels -->
 
 @if (groups().length > 0) {
-<div class="section groups">
+<div class="groups">
   <div class="group-scroll">
     @for (group of groupsJoined(); track group.id) {
-    <app-group-progress-panel [group]="group" [memberId]="loginService.member()?.username"
+    <app-group-progress-panel [group]="group" [memberId]="currentMember()?.username"
       (detail)="onGroupDetail($event?.id)" />
     }
   </div>
 </div>
 }
 
-<mat-divider />
-
-<!-- Section 3: Exercise list -->
-<div class="section exercises">
-  <app-exercise-list [exercises]="exercises()" [progressMap]="progressMap()"
-    (progressChange)="onExerciseChange($event)" />
-</div>
+<button mat-stroked-button (click)="onOpenExerciseSheet()">
+  <mat-icon>fitness_center</mat-icon>
+  Open exercises
+</button>
